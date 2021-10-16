@@ -9,4 +9,5 @@ def findmax(x, y):
 a = 5
 b = 10
 c = findmax(a, b)
-print("max = ",c)
+print("max = ", c)
+
