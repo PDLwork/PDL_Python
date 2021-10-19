@@ -77,4 +77,32 @@ print()
 
 print("------------------------------字符串劈分操作---------------------------")
 #str.split(str="", num=string.count(str))
-#split() 通过指定分隔符对字符串进行切片，如果第二个参数 num 有指定值，则分割为 num+1 个子字符串。
+#split() 通过指定分隔符对字符串进行切片，默认以空格劈分，返回一个列表，如果第二个参数 num 有指定值，则分割为 num+1 个子字符串。
+string1 = 'hello world python'
+print('1、', string1.split())
+string1 = 'hello,world,python'
+print('2、', string1.split(','))
+print('3、',string1.split(',', 1))
+print('4、',string1.split(sep = ',', maxsplit = 1))   #和上式等价
+
+#rsplit()  从右侧开始劈分
+print('5、',string1.rsplit(',', 1))
+print()
+
+print("------------------------------字符串判断操作---------------------------")
+string1 = 'hello world'
+string2 = 'hello_world'
+
+#str.isidentifier()判断是否是合法字符串（数字，字母，下划线）
+print('1、', string1.isidentifier(), string2.isidentifier())
+
+string1 = '      '
+string2 = '10'
+#str.isspace()判断是否全部由 空白字符（空格、回车、换行、TAB）组成
+print('2、', string1.isspace(), string2.isspace())
+
+#同理有如下：
+#str.isalpha()判断是否全部是字母
+#str.isdecimal()判读那是否全部是十进制
+#str.isnumeric()判读是否全部是数字
+#str.isalnum（）判断是否全部是数字和字母
