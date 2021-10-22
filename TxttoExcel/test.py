@@ -1,5 +1,5 @@
 # import os
-from typing import Text
+from typing import Awaitable, Text
 import xlwt
 
 # a = os.getcwd()     #获取当前目录
@@ -11,7 +11,8 @@ import xlwt
 txt1 = open('E:/Project/Python/PDL_Python/TxttoExcel/test.txt')
 a = txt1.read()
 print(a)
-print(type(a))
+list1 = a.split()
+print(list1[0])
 
 #创建一个workbook对象，相当于创建一个Excel文件
 book = xlwt.Workbook(encoding='utf-8',style_compression=0)
