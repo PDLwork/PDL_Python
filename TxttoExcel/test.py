@@ -1,25 +1,11 @@
+'''使用时只需将输入的txt文件目录和输出的xls文件目录修改即可使用'''
+
 import xlwt
 
-txt1 = open('E:/Project/Python/PDL_Python/TxttoExcel/test.txt')
-string1 = txt1.read()     #原字符串
-print(string1)
-print()
+txt1 = open('D:/project/Python/PDL_Python/TxttoExcel/test.txt')
+string1 = txt1.read()     #原文本字符串
 
 list1 = string1.split()   #第一层以回车分割
-print(list1)
-len1 = len(list1)
-print(list1[0])
-print()
-
-list2 = list1[0].split(',')     #第二层以逗号分割
-print(list2)
-len2 = len(list2)
-print(list2[0])
-print()
-
-list3 = list2[0].split(':')     #第三层以冒号分割
-print(list3)
-print()
 
 #创建一个workbook对象，相当于创建一个Excel文件
 book = xlwt.Workbook(encoding='utf-8',style_compression=0)
@@ -38,17 +24,21 @@ x = 1
 y = 0
 
 for first in list1:
-    print(first)
-    list2 = first.split(',')
-    for second in list2:
-        print(second)
-        list3 = second.split(':')
-        for third in list3:
-            print(third)
-            sheet.write(x, y, list3[1])
-        y += 1
-        if y > 2:
-            y = 0
-    x += 1
+    if first.find('ASDHA') != -1:
+        pass
+    else:
+        print(first)
+        list2 = first.split(',')    #第二层以逗号分隔
+        for second in list2:
+            print(second)
+            list3 = second.split(':')       #第三层以：号分隔
+            for third in list3:
+                print(third)
+                sheet.write(x, y, list3[1])
+            y += 1
+            if y > 2:
+                y = 0
+        x += 1
 
-book.save(r'E:/Project/Python/PDL_Python/TxttoExcel/test.xls')
+book.save(r'D:/project/Python/PDL_Python/TxttoExcel/test.xls')
+
