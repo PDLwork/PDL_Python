@@ -77,7 +77,7 @@ print()
 
 print("------------------------------字符串劈分操作---------------------------")
 #str.split(str="", num=string.count(str))
-#split() 通过指定分隔符对字符串进行切片，默认以空格劈分，返回一个列表，如果第二个参数 num 有指定值，则分割为 num+1 个子字符串。
+#split() 通过指定分隔符对字符串进行切片，默认以空格,回车劈分，返回一个列表，如果第二个参数 num 有指定值，则分割为 num+1 个子字符串。
 string1 = 'hello world python'
 print('1、', string1.split())
 string1 = 'hello,world,python'
