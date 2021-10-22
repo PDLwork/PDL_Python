@@ -9,10 +9,22 @@ import xlwt
 # print(a)        #打印定位之后的目录
 
 txt1 = open('E:/Project/Python/PDL_Python/TxttoExcel/test.txt')
-a = txt1.read()
+a = txt1.read()     #原字符串
 print(a)
-list1 = a.split()
+print()
+
+list1 = a.split()   #第一层以回车分割
+print(list1)
 print(list1[0])
+print()
+
+list2 = list1[0].split(',')     #第二层以逗号分割
+print(list2)
+print(list2[0])
+print()
+
+list3 = list2[0].split(':')     #第三层以冒号分割
+print(list3)
 
 #创建一个workbook对象，相当于创建一个Excel文件
 book = xlwt.Workbook(encoding='utf-8',style_compression=0)
@@ -26,5 +38,7 @@ sheet = book.add_sheet('date', cell_overwrite_ok=True)
 sheet.write(0, 0, 'X')  # 其中的'0-行, 0-列'指定表中的单元，'X'是向该单元写入的内容
 sheet.write(0, 1, 'Y')
 sheet.write(0, 2, 'Z')
+
+sheet.write(1, 0, list3[1])
 
 book.save(r'E:/Project/Python/PDL_Python/TxttoExcel/test.xls')
