@@ -1,0 +1,2 @@
+test:123,word:456,hello:789
+test:456,word:789.hello:123
