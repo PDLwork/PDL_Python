@@ -1,9 +1,8 @@
-import os
 import xlwt
 
 '''使用时只需对以下内容修改即可使用'''
 '''-----------------------------------------------------------------------------------'''
-ThrowObject = 0     #丢向无人机的物品，0为fly（手里剑）、1为box（纸箱）
+ThrowObject = 0     #丢向无人机的物品，1为fly（手里剑）、0为box（纸箱）
 InputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL'
 TxtName = 'RTSDB3D_2021-10-22 15_03_22_RigidbodiesData-2.txt'
 OutputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL'
@@ -55,9 +54,9 @@ sheet.write_merge(0, 3, 0, 0, 'tv_sec', Style)
 sheet.write_merge(0, 3, 1, 1, 'tv_usec', Style)
 sheet.write_merge(0, 0, 2, 15, 'Name', Style)
 sheet.write_merge(1, 1, 2, 8, 'drone', Style)
-if ThrowObject == 0:
-    sheet.write_merge(1, 1, 9, 15, 'fly', Style)
 if ThrowObject == 1:
+    sheet.write_merge(1, 1, 9, 15, 'fly', Style)
+if ThrowObject == 0:
     sheet.write_merge(1, 1, 9, 15, 'box', Style)
 sheet.write_merge(2, 2, 2, 4, 'Position', Style)
 sheet.write_merge(2, 2, 5, 8, 'Quaternion', Style)
@@ -81,42 +80,58 @@ sheet.write(3, 15, 'W', Style)
 #设置表格列宽  格式为一个0字符的1/256作为单位
 sheet.col(0).width = 256 * 12
 sheet.col(1).width = 256 * 8
+for i in range(2, 15):
+    sheet.col(i).width = 256 * 10
 
 '''----------------------开始提取文本内容----------------------'''
-txt1 = open(InputPath + '/' + TxtName)
+'''----------------------采用分割字符串的方法----------------------'''
+txt1 = open(InputPath + '/' + TxtName)  #读取文本目录
 string1 = txt1.read()     #原文本字符串
 string1 = string1.replace(' ', '')      #为了方便转换，将一些空格删除
 list1 = string1.split()   #第一层以回车分割
 
-#设置初值
+#设置表格内容填写初始位置
 x = 4
-y = 0
 
 for first in list1:
-    if first.find('Timestamp') == 0:
+    if first.find('Timestamp') == 0:    #判断不同的内容选择不同的分割方式并填入
         list2 = first.split(':')
         list3 = list2[1].split(',')
-        sheet.write(x, y, list3[0])
-        sheet.write(x, y + 1, list3[1])
-        x += 1
+        sheet.write(x, 0, list3[0])
+        sheet.write(x, 1, list3[1])
     elif first.find('name') == 0:
-        pass
+        if first.find('drone') == 5:
+            list2 = first.split('-->')
+            list3 = list2[1].split(':')
+            list4 = list3[1].split(',')
+
+            for i in range(0, 3):
+                sheet.write(x, 2 + i, list4[i])
+
+            list3 = list2[2].split(':')
+            list4 = list3[1].split(',')
+
+            for i in range(0, 4):
+                sheet.write(x, 5 + i, list4[i])
+            
+        if ThrowObject == 0:
+            if first.find('box') == 5:
+                list2 = first.split('-->')
+                list3 = list2[1].split(':')
+                list4 = list3[1].split(',')
+
+                for i in range(0, 3):
+                    sheet.write(x, 9 + i, list4[i])
+                
+                list2 = first.split('-->')
+                list3 = list2[2].split(':')
+                list4 = list3[1].split(',')
+
+                for i in range(0, 4):
+                    sheet.write(x, 12 + i, list4[i])
+                
+                x += 1
     else:
         pass
-        # print(first)
-        # list2 = first.split(',')    #第二层以逗号分隔
-        # for second in list2:
-        #     print(second)
-        #     list3 = second.split(':')       #第三层以：号分隔
-        #     for third in list3:
-        #         print(third)
-        #         sheet.write(x, y, list3[1])
-        #     y += 1
-        #     if y > 2:
-        #         y = 0
-        # x += 1
 
 book.save(OutputPath + '/' + ExcelName)
-
-# for i in range(0, 20):
-#     print(list1[i])
