@@ -3,10 +3,10 @@ import xlwt
 '''使用时只需对以下内容修改即可使用'''
 '''-----------------------------------------------------------------------------------'''
 ThrowObject = 0     #丢向无人机的物品，1为fly（手里剑）、0为box（纸箱）
-InputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL'
-TxtName = 'RTSDB3D_2021-10-22 15_03_22_RigidbodiesData-2.txt'
-OutputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL'
-ExcelName = 'RTSDB3D_2021-10-22 15_03_22_RigidbodiesData-2.xls'
+InputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL/box'
+TxtName = 'RTSDB3D_2021-10-22 16_33_26_RigidbodiesData-3.txt'
+OutputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL/box'
+ExcelName = 'RTSDB3D_2021-10-22 16_33_26_RigidbodiesData-3.xls'
 '''-----------------------------------------------------------------------------------'''
 
 '''----------------------设计表格样式----------------------'''
@@ -80,8 +80,8 @@ sheet.write(3, 15, 'W', Style)
 #设置表格列宽  格式为一个0字符的1/256作为单位
 sheet.col(0).width = 256 * 12
 sheet.col(1).width = 256 * 8
-for i in range(2, 15):
-    sheet.col(i).width = 256 * 10
+for i in range(2, 16):
+    sheet.col(i).width = 256 * 12
 
 '''----------------------开始提取文本内容----------------------'''
 '''----------------------采用分割字符串的方法----------------------'''
@@ -131,6 +131,25 @@ for first in list1:
                     sheet.write(x, 12 + i, list4[i])
                 
                 x += 1
+            
+        if ThrowObject == 1:
+            if first.find('fly') == 5:
+                list2 = first.split('-->')
+                list3 = list2[1].split(':')
+                list4 = list3[1].split(',')
+
+                for i in range(0, 3):
+                    sheet.write(x, 9 + i, list4[i])
+                
+                list2 = first.split('-->')
+                list3 = list2[2].split(':')
+                list4 = list3[1].split(',')
+
+                for i in range(0, 4):
+                    sheet.write(x, 12 + i, list4[i])
+                
+                x += 1
+
     else:
         pass
 
