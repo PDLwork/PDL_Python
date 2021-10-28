@@ -19,17 +19,27 @@ book.save(OutputPath + '/' + ExcelName)
 workBook = xlrd.open_workbook('E:/Project/Python/PDL_Python/OptimizeExcel/test/test1.xls')
 allSheetNames = workBook.sheet_names()
 
-sheet1 = workBook.sheet_by_index(0)
+sheet1 = workBook.sheet_by_index(0)         #根据索引获取表格， 一个excel文件里面会有多个表格，在excel下方可以看见
 
-#获取sheet内容
-rows = sheet1.row_values(1)     #获取行内容
-cols = sheet1.col_values(1)     #获取列内容
+#获取表格的行数和列数
+row_number = sheet1.nrows
+col_number = sheet1.ncols
 
-print(rows)
-print(cols)
+#获取单元格内容(三种方式)
+#   print(sheet1_content1.cell(1, 0).value)
+#   print(sheet1_content1.cell_value(2, 2))
+#   print(sheet1_content1.row(2)[2].value)
 
-print(rows[2])
-print(type(rows[2]))
+#获取sheet中一行或一列内容
+# rows = sheet1.row_values(9)     #获取行内容
+# cols = sheet1.col_values(4)     #获取列内容
 
-if rows[2] == '':
-    print(123)
+for i in range(0, col_number):
+    cols = sheet1.col_values(i)
+    for j in range(0, row_number):
+        value = sheet1.cell_value(j, i)
+        if value != '':
+            if 0 < value < 10:
+                sheet.write(j, 0, value)
+
+book.save(OutputPath + '/' + ExcelName)
