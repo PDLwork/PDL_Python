@@ -15,8 +15,8 @@ book = xlwt.Workbook(encoding='utf-8',style_compression=0)
 #encoding = 'utf-8’说明了文本的编码方式， style_compression=0说明了是否允许改变excel表格样式。
 
 # 创建一个sheet对象，一个sheet对象对应Excel文件中的一张表格。
-sheet = book.add_sheet('ExcelName', cell_overwrite_ok=True)
-# 其中的date是这张表的名字,cell_overwrite_ok，表示是否可以覆盖单元格，其实是Worksheet实例化的一个参数，默认值是False
+sheet = book.add_sheet(ExcelName, cell_overwrite_ok=True)
+# 其中的ExcelName是这张表的名字,cell_overwrite_ok，表示是否可以覆盖单元格，其实是Worksheet实例化的一个参数，默认值是False
 
 #设置对其方式(居中)
 Alignment1 = xlwt.Alignment() # Create Alignment
