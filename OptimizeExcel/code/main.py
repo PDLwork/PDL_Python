@@ -3,10 +3,12 @@ import csv
 
 '''使用时修改以下参数'''
 '''-----------------------------------------------------------------------------------'''
+# InputPath = 'E:/Project/Python/PDL_Python/OptimizeExcel/testdata'
+# CsvName = '1v 70sulv-012346.csv'
 InputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
 CsvName = '1v 70sulv-012346.csv'
 
-# OutputPath = 'E:/Project/Python/PDL_Python/OptimizeExcel/test'
+# OutputPath = 'E:/Project/Python/PDL_Python/OptimizeExcel/testdata'
 # ExcelName = 'test.xls'
 OutputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
 ExcelName = 'new1.xls'
