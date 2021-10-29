@@ -7,11 +7,11 @@ window.geometry('500x300')  #设定窗口的大小(长 * 宽)这里的乘是小x
 var = tkinter.StringVar()    # 将label标签的内容设置为字符类型，用var来接收hit_me函数的传出内容用以显示在标签上
 Label1 = tkinter.Label(window, text='Test', bg='red', font=('Arial', 15), width=25, height=2)
 Label2 = tkinter.Label(window, textvariable=var, bg='green', fg='white', font=('Arial', 12), width=30, height=1)
-# bg为背景，font为字体，width为长，height为高
+# bg为背景，font为字体，width为长，height为高,预计一个单位有32
 # 这里的长和高是字符的长和高，比如height=2,就是标签有2个字符这么高
 
 Label1.pack()    # Label内容content区域放置位置，自动调节尺寸
-Label2.place(x = 0, y = 200)
+Label2.place(x = 32, y = 32)
 # 放置的方法有：
 # 1）l.pack(); pack(side = top/bottom/left/right)默认top
 # 2)l.place();place(x=50, y=100, anchor='nw')anchor='nw'，锚定点是西北角。
