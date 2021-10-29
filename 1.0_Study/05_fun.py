@@ -10,4 +10,3 @@ a = 5
 b = 10
 c = findmax(a, b)
 print("max = ", c)
-
