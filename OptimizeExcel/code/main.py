@@ -1,19 +1,20 @@
 import xlwt
 import csv
 
+'''使用时修改以下参数'''
 '''-----------------------------------------------------------------------------------'''
-InputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/test'
-CsvName = 'jiaozhuan110jiao23v.csv'
+InputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
+CsvName = '1v 70sulv-012346.csv'
 
 # OutputPath = 'E:/Project/Python/PDL_Python/OptimizeExcel/test'
 # ExcelName = 'test.xls'
-OutputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/test'
-ExcelName = 't.xls'
+OutputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
+ExcelName = 'new1 .xls'
 
 X_max1 = -245
-X_min1 = -295
+X_min1 = -390
 
-X_max2 = -550
+X_max2 = -545
 X_min2 = -580
 '''-----------------------------------------------------------------------------------'''
 
