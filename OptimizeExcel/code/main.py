@@ -73,7 +73,7 @@ col_number = len(list1[1])      #读取列数
 for i in range(5, row_number):
     sheet.write(i, 1, i - 4)
     for j in range(2, col_number, 3):
-        if list1[i][j] != '':
+        if list1[i][j] != '':       #跳过空白点
             if X_min1 < float(list1[i][j]) < X_max1:
                 sheet.write(i, 2, float(list1[i][j]))
                 sheet.write(i, 3, float(list1[i][j + 1]))
