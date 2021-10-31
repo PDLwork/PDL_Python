@@ -3,9 +3,9 @@ import xlwt
 '''使用时只需对以下内容修改即可使用'''
 '''-----------------------------------------------------------------------------------'''
 ThrowObject = 0     #丢向无人机的物品，1为fly（手里剑）、0为box（纸箱）
-InputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL/box'
+InputPath = 'E:/project/Python/PDL_Python/TXTturntoEXCEL/box'
 TxtName = 'RTSDB3D_2021-10-22 16_33_26_RigidbodiesData-3.txt'
-OutputPath = 'D:/project/Python/PDL_Python/TXTturntoEXCEL/box'
+OutputPath = 'E:/project/Python/PDL_Python/TXTturntoEXCEL/box'
 ExcelName = 'RTSDB3D_2021-10-22 16_33_26_RigidbodiesData-3.xls'
 '''-----------------------------------------------------------------------------------'''
 
@@ -15,7 +15,7 @@ book = xlwt.Workbook(encoding='utf-8',style_compression=0)
 #encoding = 'utf-8’说明了文本的编码方式， style_compression=0说明了是否允许改变excel表格样式。
 
 # 创建一个sheet对象，一个sheet对象对应Excel文件中的一张表格。
-sheet = book.add_sheet(ExcelName, cell_overwrite_ok=True)
+sheet = book.add_sheet('123', cell_overwrite_ok=True)
 # 其中的ExcelName是这张表的名字,cell_overwrite_ok，表示是否可以覆盖单元格，其实是Worksheet实例化的一个参数，默认值是False
 
 #设置对其方式(居中)
