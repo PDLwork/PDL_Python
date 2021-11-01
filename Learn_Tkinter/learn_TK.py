@@ -1,4 +1,5 @@
 import tkinter
+import time
 
 window = tkinter.Tk()       #实例化object，建立窗口window
 window.title('Learn')       #给窗口的可视化起名字
@@ -59,6 +60,8 @@ Button1 = tkinter.Button(window,\
                         command=hit_button1)
 
 Button1.pack()
+
+print(time.strftime("%H:%M:%S"))
 
 window.mainloop()
 # 注意，loop因为是循环的意思
