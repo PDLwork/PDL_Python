@@ -53,17 +53,12 @@ def test():
         [-1,-1,-1],
     ])
 
-    #边缘检测
-    kernel4 = numpy.array\
-    ([
-        [-1,0,1],
-        [-1,0,1],
-        [-1,0,1],
-    ])
-
     convolution_image1 = convolution_Valid(image1, kernel1)
-    convolution_image2 = convolution_Valid(image1, kernel4)
+    convolution_image2 = convolution_Valid(image1, kernel2)
     convolution_image3 = convolution_Valid(image1, kernel3)
+
+    kernel1 = kernel1.astype(numpy.int64)
+    print(type(kernel1[0][0]))
 
     '''两种显示图片的方式'''
     '''CV2中显示图片，但是矩阵需要保存然后在读取才能显示'''
