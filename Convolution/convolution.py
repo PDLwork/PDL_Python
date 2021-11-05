@@ -4,16 +4,17 @@ import matplotlib.pyplot
 
 #定义Valid卷积函数
 def convolution_Valid(input, kernel):
-
+    #读取卷积核和被输入矩阵的长宽
     input_row, input_column = input.shape
     kernel_row, kernel_column = kernel.shape
 
+    #创建列表用于存储卷积后的矩阵
     array_new = []
     for i in range(input_row - kernel_row + 1):
-        array_new_row = []
+        array_new_row = []      #创建列表用于存放矩阵每行的内容
         for j in range(input_column - kernel_column + 1):
-            array1 = input[i : i + kernel_row, j : j + kernel_column]
-            array_new_row.append(numpy.sum(numpy.multiply(array1, kernel)))
+            array1 = input[i : i + kernel_row, j : j + kernel_column]       #提取出当前卷积的小矩阵
+            array_new_row.append(numpy.sum(numpy.multiply(array1, kernel)))     #对应元素相乘并相加，将得到的数据填入列表中
         array_new.append(array_new_row)
 
     return numpy.array(array_new)
@@ -28,6 +29,7 @@ def test():
 
     #定义卷积核
     #在numpy.array后加“\”为了换行美观，不加会出错
+    #垂直检测
     kernel1 = numpy.array\
     ([
         [1,0,-1],
@@ -35,7 +37,33 @@ def test():
         [1,0,-1],
     ])
 
-    image2 = convolution_Valid(image1, kernel1)
+    #水平检测
+    kernel2 = numpy.array\
+    ([
+        [ 1, 1, 1],
+        [ 0, 0, 0],
+        [-1,-1,-1],
+    ])
+
+    #边缘检测
+    kernel3 = numpy.array\
+    ([
+        [-1,-1,-1],
+        [-1, 8,-1],
+        [-1,-1,-1],
+    ])
+
+    #边缘检测
+    kernel4 = numpy.array\
+    ([
+        [-1,0,1],
+        [-1,0,1],
+        [-1,0,1],
+    ])
+
+    convolution_image1 = convolution_Valid(image1, kernel1)
+    convolution_image2 = convolution_Valid(image1, kernel4)
+    convolution_image3 = convolution_Valid(image1, kernel3)
 
     '''两种显示图片的方式'''
     '''CV2中显示图片，但是矩阵需要保存然后在读取才能显示'''
@@ -49,13 +77,21 @@ def test():
     # cv2.destroyAllWindows()
 
     '''matplotlib.pyplot显示图片'''
-    matplotlib.pyplot.subplot(121)
-    matplotlib.pyplot.axis('off')
+    matplotlib.pyplot.subplot(221)      #切割位置
+    matplotlib.pyplot.axis('off')       #关闭坐标轴
     matplotlib.pyplot.imshow(image1, cmap='gray')
 
-    matplotlib.pyplot.subplot(122)
+    matplotlib.pyplot.subplot(223)
     matplotlib.pyplot.axis('off')
-    matplotlib.pyplot.imshow(image2, cmap='gray')
+    matplotlib.pyplot.imshow(convolution_image1, cmap='gray')
+
+    matplotlib.pyplot.subplot(224)
+    matplotlib.pyplot.axis('off')
+    matplotlib.pyplot.imshow(convolution_image2, cmap='gray')
+
+    matplotlib.pyplot.subplot(222)
+    matplotlib.pyplot.axis('off')
+    matplotlib.pyplot.imshow(convolution_image3, cmap='gray')
 
     matplotlib.pyplot.show()
 
