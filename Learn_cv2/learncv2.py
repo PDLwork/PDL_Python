@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import matplotlib.pyplot
 
 img1 = cv2.imread('E:/Project/Python/PDL_Python/Learn_cv2/test.png', cv2.IMREAD_COLOR)
 img2 = cv2.imread('E:/Project/Python/PDL_Python/Learn_cv2/test.png', cv2.IMREAD_GRAYSCALE)
