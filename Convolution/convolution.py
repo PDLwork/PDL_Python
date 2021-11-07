@@ -17,7 +17,7 @@ def convolution_Valid(input, kernel):
             array_new_row.append(numpy.sum(numpy.multiply(array1, kernel)))     #对应元素相乘并相加，将得到的数据填入列表中
         array_new.append(array_new_row)
 
-    return numpy.array(array_new)
+    return numpy.array(array_new)       #返回卷积后的矩阵
 
 #主函数
 def main():
