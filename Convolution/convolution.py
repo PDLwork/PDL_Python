@@ -14,7 +14,7 @@ def convolution_Valid(input, kernel):
         array_new_row = []      #创建列表用于存放矩阵每行的内容
         for j in range(input_column - kernel_column + 1):
             array1 = input[i : i + kernel_row, j : j + kernel_column]       #提取出当前卷积的小矩阵
-            array_new_row.append(numpy.sum(numpy.multiply(array1, kernel)))     #对应元素相乘并相加，将得到的数据填入列表中
+            array_new_row.append(numpy.sum(array1 * kernel))
         array_new.append(array_new_row)
 
     return numpy.array(array_new)       #返回卷积后的矩阵
@@ -56,9 +56,6 @@ def test():
     convolution_image1 = convolution_Valid(image1, kernel1)
     convolution_image2 = convolution_Valid(image1, kernel2)
     convolution_image3 = convolution_Valid(image1, kernel3)
-
-    kernel1 = kernel1.astype(numpy.int64)
-    print(type(kernel1[0][0]))
 
     '''两种显示图片的方式'''
     '''CV2中显示图片，但是矩阵需要保存然后在读取才能显示'''
