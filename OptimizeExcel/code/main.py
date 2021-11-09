@@ -93,7 +93,7 @@ csvFile = open(InputPath + '/' + CsvName)     #读取文件
 list1 = list(csv.reader(csvFile))   #将csv文件提取成列表形式
 
 row_number = len(list1) - 5     #读取行数 去除表头行数
-col_number = len(list1[1])      #读取列数
+col_number = len(list1[3])      #读取列数
 
 if row_number < stop:       #判断结束越界
     stop = row_number
@@ -103,21 +103,22 @@ if row_number < start:      #判断开始越界
 
 for i in range(start + 4, stop + 5):
     sheet.write(i - start + 1, 1, i - 4)
-    for j in range(2, col_number, 3):
-        if list1[i][j] != '':       #跳过空白点
-            if X_min1 < float(list1[i][j]) < X_max1 and Y_min1 < float(list1[i][j + 1]) < Y_max1 and Z_min1 < float(list1[i][j + 2]) < Z_max1:
-                sheet.write(i - start + 1, 2, float(list1[i][j]))
-                sheet.write(i - start + 1, 3, float(list1[i][j + 1]))
-                sheet.write(i - start + 1, 4, float(list1[i][j + 2]))
+    if len(list1[i]) != 1:
+        for j in range(2, col_number, 3):
+            if list1[i][j] != '':       #跳过空白点
+                if X_min1 < float(list1[i][j]) < X_max1 and Y_min1 < float(list1[i][j + 1]) < Y_max1 and Z_min1 < float(list1[i][j + 2]) < Z_max1:
+                    sheet.write(i - start + 1, 2, float(list1[i][j]))
+                    sheet.write(i - start + 1, 3, float(list1[i][j + 1]))
+                    sheet.write(i - start + 1, 4, float(list1[i][j + 2]))
 
-            elif X_min2 < float(list1[i][j]) < X_max2 and Y_min2 < float(list1[i][j + 1]) < Y_max2 and Z_min2 < float(list1[i][j + 2]) < Z_max2:
-                sheet.write(i - start + 1, 5, float(list1[i][j]))
-                sheet.write(i - start + 1, 6, float(list1[i][j + 1]))
-                sheet.write(i - start + 1, 7, float(list1[i][j + 2]))
+                elif X_min2 < float(list1[i][j]) < X_max2 and Y_min2 < float(list1[i][j + 1]) < Y_max2 and Z_min2 < float(list1[i][j + 2]) < Z_max2:
+                    sheet.write(i - start + 1, 5, float(list1[i][j]))
+                    sheet.write(i - start + 1, 6, float(list1[i][j + 1]))
+                    sheet.write(i - start + 1, 7, float(list1[i][j + 2]))
 
-            else:
-                sheet.write(i - start + 1, 10, float(list1[i][j]))
-                sheet.write(i - start + 1, 11, float(list1[i][j + 1]))
-                sheet.write(i - start + 1, 12, float(list1[i][j + 2]))
+                else:
+                    sheet.write(i - start + 1, 10, float(list1[i][j]))
+                    sheet.write(i - start + 1, 11, float(list1[i][j + 1]))
+                    sheet.write(i - start + 1, 12, float(list1[i][j + 2]))
 
 book.save(OutputPath + '/' + ExcelName)
