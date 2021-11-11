@@ -2,7 +2,7 @@ import cv2
 
 '''
 Input:  Video_path(视频路径)
-        Picture_gap(每多少帧取一张图片)1
+        Picture_gap(每多少帧取一张图片)
 '''
 def video_Turnto_picture(Video_path, Picture_gap):
     cap = cv2.VideoCapture(Video_path)
