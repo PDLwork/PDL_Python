@@ -20,6 +20,6 @@ def video_Turnto_picture(Video_path, Picture_gap):
     cap.release()       #释放内存
 
 if __name__ == '__main__':
-    Video_Path = 'D:/project/Python/PDL_Python/Video_Turnto_Picture/我从未见过如此究极沙雕的视频.mp4'
-    Picture_Path = 'D:/project/Python/PDL_Python/Video_Turnto_Picture/123'
-    video_Turnto_picture(Video_Path, 10)
+    Video_Path = 'D:/project/LGMD视频/无人机遇上飞鸟和高压线.mp4'
+    Picture_Path = 'D:/project/LGMD视频/Picture1'
+    video_Turnto_picture(Video_Path, 1)
