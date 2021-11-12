@@ -7,18 +7,18 @@ import csv
 #1、路径注意中间用 / 间隔
 #2、文件名记得加后缀.csv
 InputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
-CsvName = '1v 70sulv-012346.csv'
+CsvName = '16v 70sulv-01234 1.csv'
 
 OutputPath = 'D:/project/Python/PDL_Python/OptimizeExcel/testdata'
-ExcelName = 'new1.xls'
+ExcelName = 'new2.xls'
 
 #选取点的范围 可取范围1~无穷大，已经设置好容错
-start = 1
+start = 50
 stop = 1000
 
 '''翅膀一设置参数范围'''
 X_max1 = -245
-X_min1 = -390
+X_min1 = -270
 
 Y_max1 = -155
 Y_min1 = -180
