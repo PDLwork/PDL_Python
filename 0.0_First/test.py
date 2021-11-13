@@ -1,34 +1,11 @@
-import matplotlib.pyplot as plt
-import numpy as np
+from tkinter import *
+root = Tk()
+# 获取屏幕尺寸，使窗口位于屏幕中央
+width = 380
+heigh = 300
+screenwidth = root.winfo_screenwidth()
+screenheight = root.winfo_screenheight()
+root.geometry('500x300+%d+%d'%((screenwidth-500)/2, (screenheight-300)/2))
 
-axis_x = np.array([-8, -7, -6, -5, -4, -3, -2, -1])
-axis_y = np.array([0, 1, 2, 3, 4, 5, 6, 7])
-fig1 = plt.figure(1)
+mainloop()
 
-plt.subplot(211)
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.plot(axis_x, axis_y)
-plt.draw()
-plt.pause(4)# 间隔的秒数： 4s
-
-plt.subplot(212)
-
-plt.ylabel('Losa')
-plt.xlabel('Epoch')
-plt.plot(axis_y, axis_x)
-plt.draw()
-plt.pause(6)# 间隔的秒数：6s
-
-# plt.close(fig1)
-
-# fig2 = plt.figure(2)
-# plt.ylabel('Loss')
-# plt.xlabel('Epoch')
-# plt.plot(axis_y, axis_x)
-# plt.draw()
-# plt.pause(6)# 间隔的秒数：6s
-# plt.close(fig2)
-
-# while True:
-    # pass
