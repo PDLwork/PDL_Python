@@ -1,23 +1,34 @@
-import cv2
-import numpy
+import matplotlib.pyplot as plt
+import numpy as np
 
-def callback():
-    pass
+axis_x = np.array([-8, -7, -6, -5, -4, -3, -2, -1])
+axis_y = np.array([0, 1, 2, 3, 4, 5, 6, 7])
+fig1 = plt.figure(1)
 
-img = numpy.zeros((600, 600))
+plt.subplot(211)
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.plot(axis_x, axis_y)
+plt.draw()
+plt.pause(4)# 间隔的秒数： 4s
 
-cv2.namedWindow('Test')
-cv2.createTrackbar('R', 'Test', 10, 255, callback)
-cv2.createTrackbar('B', 'Test', 10, 255, callback)
-i = 0
+plt.subplot(212)
 
-while True:
-    r = cv2.getTrackbarPos('R', 'Test')
-    g = cv2.getTrackbarPos('B', 'Test')
-    print(r, g)
-    cv2.imshow('Test', img)
-    i += 1
-    if i > 10:
-        break
+plt.ylabel('Losa')
+plt.xlabel('Epoch')
+plt.plot(axis_y, axis_x)
+plt.draw()
+plt.pause(6)# 间隔的秒数：6s
 
-cv2.destroyAllWindows()
+# plt.close(fig1)
+
+# fig2 = plt.figure(2)
+# plt.ylabel('Loss')
+# plt.xlabel('Epoch')
+# plt.plot(axis_y, axis_x)
+# plt.draw()
+# plt.pause(6)# 间隔的秒数：6s
+# plt.close(fig2)
+
+# while True:
+    # pass

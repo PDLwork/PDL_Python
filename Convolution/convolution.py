@@ -77,11 +77,11 @@ def test():
     matplotlib.pyplot.axis('off')
     matplotlib.pyplot.imshow(convolution_image1, cmap='gray')
 
-    matplotlib.pyplot.subplot(224)
+    matplotlib.pyplot.subplot(222)
     matplotlib.pyplot.axis('off')
     matplotlib.pyplot.imshow(convolution_image2, cmap='gray')
 
-    matplotlib.pyplot.subplot(222)
+    matplotlib.pyplot.subplot(224)
     matplotlib.pyplot.axis('off')
     matplotlib.pyplot.imshow(convolution_image3, cmap='gray')
 
