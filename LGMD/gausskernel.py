@@ -17,7 +17,7 @@ def gausskernel(r, sigma):
 
     return gausskernel_array
 
-def 
+
 
 E = gausskernel(6, 1.5)
 print(E)
