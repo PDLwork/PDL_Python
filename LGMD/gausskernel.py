@@ -1,4 +1,5 @@
 import numpy
+from array_test import array_print_excel
 
 def gausskernel(r, sigma):
     Array1 = numpy.zeros((31, 31))
@@ -17,10 +18,8 @@ def gausskernel(r, sigma):
 
     return gausskernel_array
 
-
-
 E = gausskernel(6, 1.5)
-print(E)
+array_print_excel(E)
 
 '''
 能源动力 谢泉生 16:30:44

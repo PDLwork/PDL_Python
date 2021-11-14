@@ -8,7 +8,7 @@ def array_print_excel(Array):
     m = len(Array[0])
     for i in range(n):
         for j in range(m):
-            sheet.write(i, j, str(Array[i][j]))
+            sheet.write(i, j, float(Array[i][j]))
             book.save('Test.xls')
 
 if __name__ == '__main__':

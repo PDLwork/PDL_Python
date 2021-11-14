@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+from array_test import array_print_excel
 '''
 
 Max_delay = 2;
@@ -93,6 +94,7 @@ tau = Calc_tau(r,alfa,beta,lamda)
 #S=E-aI
 Tempkernel =gausskernel(Sigma_E,r)-a*gausskernel(Sigma_I,r)
 kernel_E = gausskernel(Sigma_E,r)
+array_print_excel(kernel_E)
     #kernel_E(tau < 1) = Tempkernel(tau < 1)# kernel_E(ht>1) = 0;kernel_E(kernel_E<0) = 0;
 for i in range(2*r+1):
     for j in range(2*r+1):
