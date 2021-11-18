@@ -58,12 +58,6 @@ def Convolution_same(data,k,r):
         for j in range(m-2*r):
             a=data[i:i+2*r+1,j:j+2*r+1]
             res=numpy.multiply(a,k)
-#if res > 255:
-    #res=255
-#elif res<0:
-    #res=0
-#else:
-    #res=res
             line.append(numpy.sum(res))
         img_new.append(line)
     return numpy.array(img_new)
