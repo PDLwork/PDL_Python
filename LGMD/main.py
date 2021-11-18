@@ -129,7 +129,7 @@ def main():
 
         #FFI
         FFI = numpy.sum(img_diff1)
-        Thresh_G = min(((FFI/200000)*0.5),0.3)
+        Thresh_G = min(((FFI/200000)*0.5), 0.3)
 
         #卷积
         Layer_E = Convolution_same(img_diff3,kernel_E,r)
@@ -139,16 +139,15 @@ def main():
 
         #得到S层输出并处理
         Layer_S = numpy.subtract(Layer_E,Layer_I)
-        n = len(Layer_S)
-        m = len(Layer_S[0])
+        n, m = Layer_S.shape
         for i in range(n):
             for j in range(m):
                 if Layer_S[i][j]<0:
                     Layer_S[i][j]=0
         
         #对S层增强得到G层并处理
-        plus=numpy.ones([5,5], dtype = int)
-        Layer_G_Cef=Convolution_same(Layer_S,plus,2)
+        plus=numpy.ones((3,3))
+        Layer_G_Cef=Convolution_same(Layer_S,plus,1)
         Layer_G=numpy.multiply(Layer_S,Layer_G_Cef)
         for i in range(2*r+1):
             for j in range(2*r+1):
@@ -158,16 +157,16 @@ def main():
                     Layer_G[i][j]=1
 
         #处理矩阵符合灰度图定义
-        smax = numpy.ptp(Layer_S)       #求出矩阵中最大值将其设置为255
-        gmax = numpy.ptp(Layer_G)
-        Layer_S = Layer_S*(255/smax)
-        Layer_G = Layer_G*(255/gmax)
+        # smax = numpy.ptp(Layer_S)       #求出矩阵中最大值将其设置为255
+        # gmax = numpy.ptp(Layer_G)
+        # Layer_S = Layer_S*(255/smax)
+        # Layer_G = Layer_G*(255/gmax)
 
         #打印原图、S层和G层
         matplotlib.pyplot.subplot(211)
         matplotlib.pyplot.title('Original image')
         matplotlib.pyplot.axis('off')
-        matplotlib.pyplot.imshow(cv2.imread(str(FilePath+str(x+3)+'.jpg'), cv2.IMREAD_GRAYSCALE), cmap='gray')
+        matplotlib.pyplot.imshow(img3, cmap='gray')
 
         matplotlib.pyplot.subplot(223)
         matplotlib.pyplot.title('Output S')
