@@ -3,6 +3,7 @@ import math
 import cv2
 import numpy
 import matplotlib.pyplot
+from numpy.lib.type_check import imag
 from array_test import array_print_excel
 
 '''-------------------------初始参数设计-------------------------'''
@@ -13,7 +14,7 @@ a = 1.2
 alfa = -0.1
 beta = 0.5
 lamda = 0.7
-FilePath = 'D:/project/LGMDVideo/Picture/hi'
+FilePath = 'E:/project/LGMDVideo/Picture/hi'
 
 '''-------------------------D-LGMD函数部分-------------------------'''
 #gauss_kernel
@@ -58,19 +59,13 @@ def Convolution_same(data,k,r):
         for j in range(m-2*r):
             a=data[i:i+2*r+1,j:j+2*r+1]
             res=numpy.multiply(a,k)
-#if res > 255:
-    #res=255
-#elif res<0:
-    #res=0
-#else:
-    #res=res
             line.append(numpy.sum(res))
         img_new.append(line)
     return numpy.array(img_new)
 
 #D-LGMD主程序
 def main():
-    #根据参数生成卷积核s
+    #根据参数生成卷积核
     tau = Calc_tau(r, alfa, beta, lamda)
     kernel_E = gausskernel(sigma_E, r)
     kernel_I = a*gausskernel(sigma_I, r)
@@ -103,42 +98,45 @@ def main():
 
     #读取图片并处理
     for x in range(950,954-3):
-        #获取四张图片并将其归一化
+        #获取四张图片
         FileName = FilePath+str(x)+'.jpg'
         img0=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
-        img0=img0/255
         FileName = FilePath+str(x+1)+'.jpg'
         img1=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
-        img1=img1/255
         FileName = FilePath+str(x+2)+'.jpg'
         img2=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
-        img2=img2/255
         FileName = FilePath+str(x+3)+'.jpg'
         img3=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
-        img3=img3/255
 
-        #图片做差
-        img_diff10=numpy.subtract(img0,img1)
-        img_diff20=numpy.subtract(img1,img2)
-        img_diff30=numpy.subtract(img2,img3)
+        #更改图片像素大小
+        img0 = cv2.resize(img0, dsize=(480, 360))
+        img1 = cv2.resize(img1, dsize=(480, 360))
+        img2 = cv2.resize(img2, dsize=(480, 360))
+        img3 = cv2.resize(img3, dsize=(480, 360))
 
-        #取绝对值
-        img_diff1=numpy.abs(img_diff10)
-        img_diff2=numpy.abs(img_diff20)
-        img_diff3=numpy.abs(img_diff30)   
+        #更改图片数据类型  相减才不会溢出
+        img0 = img0.astype(numpy.int16)
+        img1 = img1.astype(numpy.int16)
+        img2 = img2.astype(numpy.int16)
+        img3 = img3.astype(numpy.int16)
+
+        #做差取绝对值
+        img_diff1=numpy.abs(img0 - img1)
+        img_diff2=numpy.abs(img1 - img2)
+        img_diff3=numpy.abs(img2 - img3)
 
         #FFI
         FFI = numpy.sum(img_diff1)
-        Thresh_G = min(((FFI/200000)*0.5), 0.3)
+        Thresh_G = min(((FFI/200000)*0.5), 0.3)         #注意
 
         #卷积
         Layer_E = Convolution_same(img_diff3,kernel_E,r)
         Layer_I_delay1 = Convolution_same(img_diff2,kernel_I_delay1,r)
         Layer_I_delay2 = Convolution_same(img_diff1,kernel_I_delay2,r)
-        Layer_I = numpy.add(Layer_I_delay1 , Layer_I_delay2) #delay0 has been involved to kernal E.
+        Layer_I = Layer_I_delay1 + Layer_I_delay2       #delay0 has been involved to kernal E.
 
         #得到S层输出并处理
-        Layer_S = numpy.subtract(Layer_E,Layer_I)
+        Layer_S = Layer_E - Layer_I
         n, m = Layer_S.shape
         for i in range(n):
             for j in range(m):
@@ -151,17 +149,13 @@ def main():
         Layer_G=numpy.multiply(Layer_S,Layer_G_Cef)
         for i in range(2*r+1):
             for j in range(2*r+1):
-                if Layer_G[i][j]< Thresh_G:
-                    Layer_G[i][j]=0
-                if Layer_G[i][j]>1:
-                    Layer_G[i][j]=1
+                if Layer_G[i][j] < Thresh_G:
+                    Layer_G[i][j] = 0
+                if Layer_G[i][j] > 255:
+                    Layer_G[i][j] = 255
 
-        #处理矩阵符合灰度图定义
-        # smax = numpy.ptp(Layer_S)       #求出矩阵中最大值将其设置为255
-        # gmax = numpy.ptp(Layer_G)
-        # Layer_S = Layer_S*(255/smax)
-        # Layer_G = Layer_G*(255/gmax)
-
+        # cv2.imshow('test1', Layer_G)
+        # cv2.waitKey(0)
         #打印原图、S层和G层
         matplotlib.pyplot.subplot(211)
         matplotlib.pyplot.title('Original image')
