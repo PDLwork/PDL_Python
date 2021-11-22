@@ -1,4 +1,7 @@
-from math import exp
+import random
+import time
 
-
-print(exp(1))
+while True:
+    a = random.randint(0, 5)
+    print(a)
+    time.sleep(1)
