@@ -1,4 +1,4 @@
-'''走出房间简单例子'''
+'''走出房间复杂例子'''
 
 import numpy
 import random
@@ -7,7 +7,6 @@ import tkinter
 # 初始化矩阵
 Q = numpy.zeros((6, 6))
 
-# 回报矩阵R
 R = numpy.array\
 ([
     [-1,    -1,    -1,    -1,    0,    -1],
@@ -20,6 +19,9 @@ R = numpy.array\
 
 # 折扣因子
 γ = 0.8
+
+# 学习因子
+α = 0.9
 
 #学习次数
 learn_number = 0
@@ -41,11 +43,13 @@ def main(count):
 
             next_action = possible_action[random.randint(0, len(possible_action) - 1)]     #在可能动作种中随机挑选下一个动作
 
-            Q[state][next_action] = R[state][next_action] + γ * (Q[next_action]).max()  #计算Q值更新Q表
+            Q_target = R[state][next_action] + γ * (Q[next_action]).max()
+            Q_predict= Q[state][next_action]
+            Q[state][next_action] += α * (Q_target - Q_predict)
 
             state = next_action      #进入下一个状态
 
-            # 到达目的地跳出循环
+            # 到达目的地跳出该E
             if state == 5:
                 break
 
