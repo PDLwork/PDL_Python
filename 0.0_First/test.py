@@ -1,6 +1,12 @@
-import numpy
+import random
+import time
 
-Q = numpy.zeros((6, 6))
-# Q = numpy.matrix(Q)
+a = 1
+b = 1
+if a == b:
+    print(1)
 
-print(Q)
+
+while True:
+    print(random.random())
+    time.sleep(1)
