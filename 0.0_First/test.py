@@ -1,12 +1,16 @@
-import random
-import time
+import numpy
 
-a = 1
-b = 1
-if a == b:
-    print(1)
+R = numpy.array\
+([
+    [-1,    -1,    -1,    -1,    0,    -1],
+    [-1,    -1,    -1,     0,   -1,   100],
+    [-1,    -1,    -1,     0,   -1,    -1],
+    [-1,     0,     0,    -1,    0,    -1],
+    [ 0,    -1,    -1,     0,   -1,   100],
+    [-1,     0,    -1,    -1,    0,   100]
+])
 
+maxindex = numpy.argmin(R[4]) 
+print(maxindex)
 
-while True:
-    print(random.random())
-    time.sleep(1)
+print((R[0] == 0).all())

@@ -27,7 +27,7 @@ keep = 2
 
 #根据当前状态选择下一动作 
 def choose_action(state):
-    if random.random() > ε:
+    if (random.random() > ε) or ((Q[state] == 0).all()):
         if state == 0:
             next_action = random.choice([Right, keep])
         elif state == 5:
@@ -35,7 +35,7 @@ def choose_action(state):
         else:
             next_action = random.choice([Left, Right, keep])
     else:
-        next_action = 1
+        next_action = numpy.argmax(Q[state]) 
 
     return next_action
 
@@ -75,6 +75,8 @@ def main(count):
         state = 0
         # state = random.randint(0, 5)
 
+        step = 0
+
         while True:
             next_action = choose_action(state)      #根据当前状态选择动作
 
@@ -88,9 +90,13 @@ def main(count):
 
             state = next_state      #进入下一个状态
 
+            step += 1
+
             # 到达目的地跳出该回合训练
             if state == 5:
                 break
+        
+        Text2.insert("end", '%d\t'%step)
 
 #GUI页面设计
 Window = tkinter.Tk()      #创建调参的窗口
@@ -115,6 +121,9 @@ line6 = canvas1.create_line(310, 100, 360, 100,fill="black")
 rectangle1 = canvas1.create_rectangle(315, 50, 355, 90,fill="blue")
 circle1 = canvas1.create_oval(15, 50, 55, 90,fill="red")
 
+Text2 = tkinter.Text(Window, font=("黑体",30), height=10, width=50)
+Text2.pack()
+
 def Q_table_renew():
     Text1.delete(5.0, tkinter.END)
     Text1.insert("end", '\n')
@@ -125,7 +134,7 @@ def environment_renew():
     global circle1
     canvas1.delete(circle1)
     circle1 = canvas1.create_oval(15, 50, 55, 90,fill="red")
-    
+
     Text1.delete(2.21, 2.26)
     Text1.insert(2.21, str(learn_number))
     Window.update()
@@ -135,12 +144,6 @@ def move():
     global count_flag
     if count_flag:
         main(1)
-        Text1.delete(2.21, 2.26)
-        Text1.insert(2.21, str(learn_number))
-        Text1.delete(5.0, tkinter.END)
-        Text1.insert("end", '\n')
-        Text1.insert("end", Q)
-        # environment_renew()
     Window.after(1000, move)
     count_flag = True
 
