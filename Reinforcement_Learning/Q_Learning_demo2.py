@@ -1,4 +1,5 @@
 '''走出房间复杂例子'''
+'''加入学习因子  真实版Q-Learning'''
 
 import numpy
 import random

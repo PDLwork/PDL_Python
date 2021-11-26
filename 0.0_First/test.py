@@ -1,16 +1,10 @@
-import numpy
+import sympy
 
-R = numpy.array\
-([
-    [-1,    -1,    -1,    -1,    0,    -1],
-    [-1,    -1,    -1,     0,   -1,   100],
-    [-1,    -1,    -1,     0,   -1,    -1],
-    [-1,     0,     0,    -1,    0,    -1],
-    [ 0,    -1,    -1,     0,   -1,   100],
-    [-1,     0,    -1,    -1,    0,   100]
-])
-
-maxindex = numpy.argmin(R[4]) 
-print(maxindex)
-
-print((R[0] == 0).all())
+#解方程 有限解
+#定义变量
+x=sympy.Symbol('x')
+fx= ((1 / (sympy.sqrt(2 * sympy.pi) * x)) * sympy.exp(-1 / (2 * x ** 2))) - 3/4
+#可求解直接给出解向量
+y1=fx.evalf(subs={x:1.1})
+# print(sympy.solve(fx,x))
+print(y1)

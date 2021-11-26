@@ -1,4 +1,5 @@
 '''直线寻宝例子'''
+'''用于展示逐步学习过程'''
 
 import numpy
 import random
@@ -66,16 +67,16 @@ def get_environment_feedback(state, action):
 
 # Q-Learning主程序
 def main(count):
-    global learn_number
+    global learn_number     #用于累计学习次数
     learn_number += count
-    environment_renew()
 
     for i in range(count):
-        # 对每一个训练,随机选择一种状态
+        # 每次初始状态为0
         state = 0
-        # state = random.randint(0, 5)
 
         step = 0
+
+        environment_renew()
 
         while True:
             next_action = choose_action(state)      #根据当前状态选择动作
@@ -121,24 +122,27 @@ line6 = canvas1.create_line(310, 100, 360, 100,fill="black")
 rectangle1 = canvas1.create_rectangle(315, 50, 355, 90,fill="blue")
 circle1 = canvas1.create_oval(15, 50, 55, 90,fill="red")
 
-Text2 = tkinter.Text(Window, font=("黑体",30), height=10, width=50)
+Text2 = tkinter.Text(Window, font=("黑体",20), height=10, width=50)
 Text2.pack()
 
+#Q表更新时及时刷新
 def Q_table_renew():
     Text1.delete(5.0, tkinter.END)
     Text1.insert("end", '\n')
     Text1.insert("end", Q)
     Window.update()
 
+#环境初始化更新
 def environment_renew():
     global circle1
     canvas1.delete(circle1)
-    circle1 = canvas1.create_oval(15, 50, 55, 90,fill="red")
+    circle1 = canvas1.create_oval(15, 50, 55, 90, fill="red")
 
     Text1.delete(2.21, 2.26)
     Text1.insert(2.21, str(learn_number))
     Window.update()
 
+#每次学习完后停止一秒然后重新学习
 count_flag = False
 def move():
     global count_flag
@@ -146,7 +150,6 @@ def move():
         main(1)
     Window.after(1000, move)
     count_flag = True
-
 move()
 
 Window.mainloop()

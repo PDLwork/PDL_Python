@@ -1,4 +1,5 @@
 '''直线寻宝例子'''
+'''用于演示随着学习次数最终Q表收敛'''
 
 import numpy
 import random
