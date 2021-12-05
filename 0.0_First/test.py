@@ -1,10 +1,6 @@
-import sympy
-
-#解方程 有限解
-#定义变量
-x=sympy.Symbol('x')
-fx= ((1 / (sympy.sqrt(2 * sympy.pi) * x)) * sympy.exp(-1 / (2 * x ** 2))) - 3/4
-#可求解直接给出解向量
-y1=fx.evalf(subs={x:1.1})
-# print(sympy.solve(fx,x))
-print(y1)
+list1 = [[1, 2, 3], [4, 5, 6]]
+list1.append([7, 8, 9])
+list1.append([5])
+print([7, 8] in list1)
+print(list1)
+print(list1.index([5]))
