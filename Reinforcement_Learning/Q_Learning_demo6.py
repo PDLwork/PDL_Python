@@ -9,9 +9,40 @@ import random
 '''----------------------------Q-Learning算法部分-----------------------------------'''
 position_x = 0
 position_y = 0
-position_list = []
+position_list = [(0, 0)]
 
+#根据当前状态选择下一动作 
+def choose_action(state):
+    pass
 
+#根据当前状态和动作与环境交互得到奖励和下一状态
+def get_environment_feedback(state, action):
+    global position_x, position_y
+
+    if action == 'Up':
+        canvas.move(circle_anget, 0, -50)
+        position_y += 1
+    if action == 'Down':
+        canvas.move(circle_anget, 0, 50)
+        position_y -= 1
+    if action == 'Right':
+        canvas.move(circle_anget, 50, 0)
+        position_x += 1
+    if action == 'Left':
+        canvas.move(circle_anget, -50, 0)
+        position_x -= 1
+
+    if (position_x, position_y) in position_list:
+        next_state = position_list.index((position_x, position_y))
+    else:
+        position_list.append((position_x, position_y))
+        next_state = state + 1
+
+    R = 0
+    
+    return R, next_state
+
+#Q-Learning主程序
 def main():
     pass
 
@@ -48,8 +79,7 @@ def test():
     Text1.pack()
 
     def Press_Key(event):
-        global position_y
-        global position_x
+        global position_x, position_y
         if event.keysym == 'Up':
             canvas.move(circle_anget, 0, -50)
             position_y += 1
