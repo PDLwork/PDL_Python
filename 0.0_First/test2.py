@@ -1,14 +1,7 @@
-from tkinter import *
+import numpy
 
-def show(event):
-    s=event.keysym
-    if s == 'Up':
-        lb.insert("end", s)
-
-root=Tk()
-root.title('按键实验')
-root.geometry('200x200')
-lb=Text(root, font=("黑体",20), height=10, width=50)
-root.bind('<Up>',show)
-lb.pack()
-root.mainloop()
+Q = numpy.zeros((1, 4))
+print(Q)
+Q = numpy.row_stack([Q, [0, 0, 0, 0]])
+Q = numpy.row_stack([Q, [0, 0, 0, 0]])
+print(Q)
