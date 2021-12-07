@@ -20,8 +20,8 @@ Q = numpy.zeros((1, 4))
 #选择概率
 ε = 0.8
 
-# 学习次数
-learn_number = 0
+#运动时间
+step_time = 0.1
 
 # 动作代表值
 Left = 0
@@ -132,7 +132,7 @@ def get_environment_feedback(state, action):
     elif R == 100:
         treasure_flag = True
     
-    time.sleep(0.1)
+    time.sleep(step_time)
     windows.update()
 
     return R, next_state, trap_flag, treasure_flag
