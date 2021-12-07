@@ -1,53 +1,221 @@
+'''2D寻宝例子'''
+'''该版本为放到一个陌生环境，不知道一共有多少状态量'''
+
 import tkinter
+import numpy
 import time
+import random
 
+'''----------------------------Q-Learning算法部分-----------------------------------'''
+# 初始化矩阵
+Q = numpy.zeros((1, 4))
+
+# 折扣因子
+γ = 0.8
+
+# 学习因子
+α = 0.9
+
+#选择概率
+ε = 0.8
+
+# 学习次数
+learn_number = 0
+
+# 动作代表值
+Left = 0
+Right = 1
+Up = 2
+Down = 3
+
+position_x = 0
+position_y = 0
+position_list = [[0, 0]]
+
+#根据当前状态选择下一动作 
+def choose_action(state):
+    position_x = position_list[state][0]
+    position_y = position_list[state][1]
+
+    if (random.random() > ε) or ((Q[state] == 0).all()):
+        action_list = [Right, Left, Up, Down]
+        if position_x == 0:
+            action_list.remove(Left)
+        if position_x == 5:
+            action_list.remove(Right)
+        if position_y == 0:
+            action_list.remove(Up)
+        if position_y == -5:
+            action_list.remove(Down)
+
+        action = random.choice(action_list)
+    elif (numpy.amin(Q[state]) < 0) and (numpy.amax(Q[state]) == 0):
+        action_list = []
+        for i in range(len(Q[state])):
+            if Q[state][i] == 0:
+                action_list.append(i)
+
+        if (position_x == 0) and (Left in action_list):
+            action_list.remove(Left)
+        if (position_x == 5) and (Right in action_list):
+            action_list.remove(Right)
+        if (position_y == 0) and (Up in action_list):
+            action_list.remove(Up)
+        if (position_y == -5) and (Down in action_list):
+            action_list.remove(Down)
+
+        action = random.choice(action_list)
+    else:
+        action = numpy.argmax(Q[state])
+    
+    return action
+
+#根据当前状态和动作与环境交互得到奖励和下一状态
+def get_environment_feedback(state, action):
+    global Q
+    position_x = position_list[state][0]
+    position_y = position_list[state][1]
+
+    if action == Up:
+        canvas.move(circle_anget, 0, -50)
+        position_y += 1
+    if action == Down:
+        canvas.move(circle_anget, 0, 50)
+        position_y -= 1
+    if action == Right:
+        canvas.move(circle_anget, 50, 0)
+        position_x += 1
+    if action == Left:
+        canvas.move(circle_anget, -50, 0)
+        position_x -= 1
+
+    if [position_x, position_y] in position_list:
+        next_state = position_list.index([position_x, position_y])
+    else:
+        position_list.append([position_x, position_y])
+        Q = numpy.row_stack([Q, [0, 0, 0, 0]])
+        next_state = len(Q) - 1
+
+    if position_x == 5 and position_y == -5:
+        R = 100
+    elif position_x == 1 and position_y == -2:
+        R = -100
+    elif position_x == 1 and position_y == -3:
+        R = -100
+    elif position_x == 1 and position_y == -4:
+        R = -100
+    elif position_x == 3 and position_y == -2:
+        R = -100
+    elif position_x == 3 and position_y == -4:
+        R = -100
+    else:
+        R = 0
+    
+    trap_flag = False
+    treasure_flag = False
+    if R == -100:
+        trap_flag = True
+    elif R == 100:
+        treasure_flag = True
+    
+    time.sleep(0.1)
+    windows.update()
+
+    return R, next_state, trap_flag, treasure_flag
+
+#Q-Learning主程序
+def main():
+    state = 0
+    environment_renew()
+    step = 0
+    while True:
+        action = choose_action(state)
+        R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
+        Q_target = R + γ * Q[next_state].max()
+        Q_predict= Q[state][action]
+        Q[state][action] += α * (Q_target - Q_predict)
+        state = next_state
+        
+        step += 1
+
+        if treasure_flag:
+            Text1.insert("end", '%d\t'%step)
+            break
+        if trap_flag:
+            Text1.insert("end", 'F\t')
+            break
+
+
+'''----------------------------------GUI页面-------------------------------------'''
 windows = tkinter.Tk()
-windows.title('Window_Test')    #设置窗口名字
+windows.title('Window_Test')
 
-canvas1 = tkinter.Canvas(windows, height=100, width=370)
-canvas1.pack()
+canvas = tkinter.Canvas(windows, height=300, width=300)
+canvas.pack()
 
-line1 = canvas1.create_line( 10, 100,  60, 100,fill="black")
-line2 = canvas1.create_line( 70, 100, 120, 100,fill="black")
-line3 = canvas1.create_line(130, 100, 180, 100,fill="black")
-line4 = canvas1.create_line(190, 100, 240, 100,fill="black")
-line5 = canvas1.create_line(250, 100, 300, 100,fill="black")
-line6 = canvas1.create_line(310, 100, 360, 100,fill="black")
+canvas.create_line(0,  50,  300,  50,fill="black")
+canvas.create_line(0, 100,  300, 100,fill="black")
+canvas.create_line(0, 150,  300, 150,fill="black")
+canvas.create_line(0, 200,  300, 200,fill="black")
+canvas.create_line(0, 250,  300, 250,fill="black")
+canvas.create_line( 50, 0,   50, 300,fill="black")
+canvas.create_line(100, 0,  100, 300,fill="black")
+canvas.create_line(150, 0,  150, 300,fill="black")
+canvas.create_line(200, 0,  200, 300,fill="black")
+canvas.create_line(250, 0,  250, 300,fill="black")
 
-rectangle1 = canvas1.create_rectangle(315, 50, 355, 90,fill="blue")
-circle1 = canvas1.create_oval(15, 50, 55, 90,fill="red")
+canvas.create_rectangle(255, 255, 295, 295,fill="blue")
+canvas.create_rectangle( 55, 105,  95, 145,fill="black")
+canvas.create_rectangle( 55, 155,  95, 195,fill="black")
+canvas.create_rectangle( 55, 205,  95, 245,fill="black")
+canvas.create_rectangle(155, 105, 195, 145,fill="black")
+canvas.create_rectangle(155, 205, 195, 245,fill="black")
 
-def hit_Button_Right():
-    canvas1.move(circle1, 60, 0)
+circle_anget = canvas.create_oval(5, 5, 45, 45,fill="red")
 
-def hit_Button_Left():
-    canvas1.move(circle1, -60, 0)
+#环境初始化更新
+def environment_renew():
+    global circle_anget
+    canvas.delete(circle_anget)
+    circle_anget = canvas.create_oval(5, 5, 45, 45, fill="red")
 
-Button_Right = tkinter.Button(windows,\
-                            text='Right',\
-                            command=hit_Button_Right)
-Button_Right.pack()
+    windows.update()
 
-Button_Left = tkinter.Button(windows,\
-                            text='Left',\
-                            command=hit_Button_Left)
-Button_Left.pack()
+'''测试可删'''
+def test():
+    global Text1
+    Text1 = tkinter.Text(windows, font=("黑体",15), height=10, width=50)
+    Text1.pack()
 
-# def time_move():
-#     time.sleep(1)
-#     canvas1.move(circle1, 60, 0)
+    # Text2 = tkinter.Text(windows, font=("黑体",20), height=10, width=50)
+    # Text2.pack()
+
+    def Press_Key(event):
+        global position_x, position_y
+        if event.keysym == 'Up':
+            canvas.move(circle_anget, 0, -50)
+            position_y += 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
+        if event.keysym == 'Down':
+            canvas.move(circle_anget, 0, 50)
+            position_y -= 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
+        if event.keysym == 'Right':
+            canvas.move(circle_anget, 50, 0)
+            position_x += 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
+        if event.keysym == 'Left':
+            canvas.move(circle_anget, -50, 0)
+            position_x -= 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
+        if event.keysym == 'space':
+            def test():
+                main()
+                windows.after(1000, test)
+            test()
+    
+    windows.bind('<Key>', Press_Key)
+
+test()
 
 windows.mainloop()
-
-count_flag = False
-def move():
-    global count_flag
-    if count_flag:
-        canvas1.move(circle1, 60, 0)
-    windows.after(1000, move)
-    count_flag = True
-    print(1)
-
-move()
-
-# windows.mainloop()

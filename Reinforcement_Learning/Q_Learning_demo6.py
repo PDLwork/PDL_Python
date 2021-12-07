@@ -1,5 +1,6 @@
 '''2D寻宝例子'''
 '''该版本为放到一个陌生环境，不知道一共有多少状态量'''
+'''更多陷阱且设计避免同一方式掉入陷阱'''
 
 import tkinter
 import numpy
@@ -36,10 +37,14 @@ position_list = [[0, 0]]
 def choose_action(state):
     position_x = position_list[state][0]
     position_y = position_list[state][1]
-    action_list = [Right, Left, Up, Down]
-    #print(action_list)
 
     if (random.random() > ε) or ((Q[state] == 0).all()):
+        # action_list = [Right, Left, Up, Down]
+        action_list = []
+        for i in range(len(Q[state])):
+            if Q[state][i] >= 0:
+                action_list.append(i)
+
         if position_x == 0:
             action_list.remove(Left)
         if position_x == 5:
@@ -48,7 +53,23 @@ def choose_action(state):
             action_list.remove(Up)
         if position_y == -5:
             action_list.remove(Down)
-        #print(action_list)
+
+        action = random.choice(action_list)
+    elif (numpy.amin(Q[state]) < 0) and (numpy.amax(Q[state]) == 0):
+        action_list = []
+        for i in range(len(Q[state])):
+            if Q[state][i] == 0:
+                action_list.append(i)
+
+        if (position_x == 0) and (Left in action_list):
+            action_list.remove(Left)
+        if (position_x == 5) and (Right in action_list):
+            action_list.remove(Right)
+        if (position_y == 0) and (Up in action_list):
+            action_list.remove(Up)
+        if (position_y == -5) and (Down in action_list):
+            action_list.remove(Down)
+
         action = random.choice(action_list)
     else:
         action = numpy.argmax(Q[state])
@@ -79,30 +100,64 @@ def get_environment_feedback(state, action):
     else:
         position_list.append([position_x, position_y])
         Q = numpy.row_stack([Q, [0, 0, 0, 0]])
-        # print(Q)
         next_state = len(Q) - 1
-    #print(next_state)
-    # print(position_list)
 
     if position_x == 5 and position_y == -5:
         R = 100
+    elif position_x == 1 and position_y == -2:
+        R = -100
+    elif position_x == 1 and position_y == -3:
+        R = -100
+    elif position_x == 1 and position_y == -4:
+        R = -100
+    elif position_x == 3 and position_y == -2:
+        R = -100
+    elif position_x == 3 and position_y == -4:
+        R = -100
+    elif position_x == 2 and position_y == 0:
+        R = -100
+    elif position_x == 4 and position_y == -1:
+        R = -100
+    elif position_x == 5 and position_y == -3:
+        R = -100
+    elif position_x == 3 and position_y == -5:
+        R = -100
     else:
         R = 0
     
-    return R, next_state
+    trap_flag = False
+    treasure_flag = False
+    if R == -100:
+        trap_flag = True
+    elif R == 100:
+        treasure_flag = True
+    
+    time.sleep(0.1)
+    windows.update()
+
+    return R, next_state, trap_flag, treasure_flag
 
 #Q-Learning主程序
 def main():
     state = 0
+    environment_renew()
+    step = 0
     while True:
         action = choose_action(state)
-        R, next_state = get_environment_feedback(state, action)
+        R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
         Q_target = R + γ * Q[next_state].max()
         Q_predict= Q[state][action]
         Q[state][action] += α * (Q_target - Q_predict)
+        # Q_table_renew()
         state = next_state
         
-        if position_list[state] == [5, -5]:
+        step += 1
+
+        if treasure_flag:
+            Text1.insert("end", '%d\t'%step)
+            break
+        if trap_flag:
+            Text1.insert("end", 'F\t')
             break
 
 
@@ -130,12 +185,25 @@ canvas.create_rectangle( 55, 155,  95, 195,fill="black")
 canvas.create_rectangle( 55, 205,  95, 245,fill="black")
 canvas.create_rectangle(155, 105, 195, 145,fill="black")
 canvas.create_rectangle(155, 205, 195, 245,fill="black")
+canvas.create_rectangle(105,   5, 145,  45,fill="black")
+canvas.create_rectangle(155, 255, 195, 295,fill="black")
+canvas.create_rectangle(205,  55, 245,  95,fill="black")
+canvas.create_rectangle(255, 155, 295, 195,fill="black")
 
 circle_anget = canvas.create_oval(5, 5, 45, 45,fill="red")
 
+#环境初始化更新
+def environment_renew():
+    global circle_anget
+    canvas.delete(circle_anget)
+    circle_anget = canvas.create_oval(5, 5, 45, 45, fill="red")
+
+    windows.update()
+
 '''测试可删'''
 def test():
-    Text1 = tkinter.Text(windows, font=("黑体",20), height=10, width=50)
+    global Text1, Text2
+    Text1 = tkinter.Text(windows, font=("黑体",15), height=10, width=50)
     Text1.pack()
 
     def Press_Key(event):
@@ -143,19 +211,24 @@ def test():
         if event.keysym == 'Up':
             canvas.move(circle_anget, 0, -50)
             position_y += 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
         if event.keysym == 'Down':
             canvas.move(circle_anget, 0, 50)
             position_y -= 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
         if event.keysym == 'Right':
             canvas.move(circle_anget, 50, 0)
             position_x += 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
         if event.keysym == 'Left':
             canvas.move(circle_anget, -50, 0)
             position_x -= 1
+            Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
         if event.keysym == 'space':
-            main()
-
-        Text1.insert("end", '(%d,'%position_x + '%d)'%position_y)
+            def test():
+                main()
+                windows.after(1000, test)
+            test()
     
     windows.bind('<Key>', Press_Key)
 
