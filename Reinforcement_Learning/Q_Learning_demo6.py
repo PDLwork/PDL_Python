@@ -17,11 +17,11 @@ Q = numpy.zeros((1, 4))
 # 学习因子
 α = 0.9
 
-#选择概率
+#选择根据最大值决定运动方向概率
 ε = 0.8
 
 #运动时间
-step_time = 0.1
+step_time = 0.05
 
 # 动作代表值
 Left = 0
@@ -39,7 +39,6 @@ def choose_action(state):
     position_y = position_list[state][1]
 
     if (random.random() > ε) or ((Q[state] == 0).all()):
-        # action_list = [Right, Left, Up, Down]
         action_list = []
         for i in range(len(Q[state])):
             if Q[state][i] >= 0:

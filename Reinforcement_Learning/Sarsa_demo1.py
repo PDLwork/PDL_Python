@@ -20,8 +20,8 @@ Q = numpy.zeros((1, 4))
 #选择概率
 ε = 0.8
 
-# 学习次数
-learn_number = 0
+#运动时间
+step_time = 0.01
 
 # 动作代表值
 Left = 0
@@ -39,12 +39,7 @@ def choose_action(state):
     position_y = position_list[state][1]
 
     if (random.random() > ε) or ((Q[state] == 0).all()):
-        # action_list = [Right, Left, Up, Down]
-        action_list = []
-        for i in range(len(Q[state])):
-            if Q[state][i] >= 0:
-                action_list.append(i)
-
+        action_list = [Right, Left, Up, Down]
         if position_x == 0:
             action_list.remove(Left)
         if position_x == 5:
@@ -60,7 +55,7 @@ def choose_action(state):
         for i in range(len(Q[state])):
             if Q[state][i] == 0:
                 action_list.append(i)
-
+        
         if (position_x == 0) and (Left in action_list):
             action_list.remove(Left)
         if (position_x == 5) and (Right in action_list):
@@ -69,8 +64,13 @@ def choose_action(state):
             action_list.remove(Up)
         if (position_y == -5) and (Down in action_list):
             action_list.remove(Down)
-
-        action = random.choice(action_list)
+        
+        if len(action_list) == 0:
+            for i in range(len(Q[state])):
+                if Q[state][i] < 0:
+                    action_list.append[i]
+        else:
+            action = random.choice(action_list)
     else:
         action = numpy.argmax(Q[state])
     
@@ -132,7 +132,7 @@ def get_environment_feedback(state, action):
     elif R == 100:
         treasure_flag = True
     
-    time.sleep(0.1)
+    time.sleep(step_time)
     windows.update()
 
     return R, next_state, trap_flag, treasure_flag
@@ -142,14 +142,15 @@ def main():
     state = 0
     environment_renew()
     step = 0
+    action = choose_action(state)
     while True:
-        action = choose_action(state)
         R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
-        Q_target = R + γ * Q[next_state].max()
+        next_action = choose_action(next_state)
+        Q_target = R + γ * Q[next_state][next_action]
         Q_predict= Q[state][action]
         Q[state][action] += α * (Q_target - Q_predict)
-        # Q_table_renew()
         state = next_state
+        action = next_action
         
         step += 1
 

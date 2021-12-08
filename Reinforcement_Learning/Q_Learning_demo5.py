@@ -20,7 +20,7 @@ Q = numpy.zeros((1, 4))
 ε = 0.8
 
 #运动时间
-step_time = 0.1
+step_time = 0.01
 
 # 动作代表值
 Left = 0
@@ -47,7 +47,7 @@ def choose_action(state):
             action_list.remove(Up)
         if position_y == -5:
             action_list.remove(Down)
-
+        
         action = random.choice(action_list)
     elif (numpy.amin(Q[state]) < 0) and (numpy.amax(Q[state]) == 0):
         action_list = []
@@ -63,7 +63,7 @@ def choose_action(state):
             action_list.remove(Up)
         if (position_y == -5) and (Down in action_list):
             action_list.remove(Down)
-
+        
         action = random.choice(action_list)
     else:
         action = numpy.argmax(Q[state])
