@@ -1,7 +1,2 @@
-a = 4
-b = 9
-c = 6
-
-
-list1 = [a, b, c]
+list1 = [-1, -5, -9]
 print(max(list1))

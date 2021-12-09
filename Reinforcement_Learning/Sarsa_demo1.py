@@ -15,7 +15,7 @@ Q = numpy.zeros((1, 4))
 γ = 0.8
 
 # 学习因子
-α = 0.9
+α = 0.8
 
 #选择概率
 ε = 0.8
@@ -38,7 +38,11 @@ def choose_action(state):
     position_x = position_list[state][0]
     position_y = position_list[state][1]
 
-    action_list = [Right, Left, Up, Down]
+    action_list = []
+    for i in range(len(Q[state])):
+        if Q[state][i] >= 0:
+            action_list.append(i)
+
     if position_x == 0:
         action_list.remove(Left)
     if position_x == 5:
@@ -55,7 +59,13 @@ def choose_action(state):
         for i in action_list:
             temporary_list.append(Q[state][i])
         max_value = max(temporary_list)
-        action = numpy.argwhere(Q[state] == max_value)[0][0]
+        if max_value == 0:
+            for i in range(4):
+                if i in action_list:
+                    action = i
+                    break
+        else:
+            action = numpy.argwhere(Q[state] == max_value)[0][0]
 
     return action
 
@@ -121,9 +131,14 @@ def main():
     while True:
         R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
         next_action = choose_action(next_state)
-        Q_target = R + γ * Q[next_state][next_action]
         Q_predict= Q[state][action]
+        if trap_flag or treasure_flag:
+            Q_target = R
+        else:
+            Q_target = R + γ * Q[next_state][next_action]
         Q[state][action] += α * (Q_target - Q_predict)
+        Text2.delete(1.0, tkinter.END)
+        Text2.insert("end", Q)
         state = next_state
         action = next_action
         
@@ -177,6 +192,8 @@ def test():
     global Text1, Text2
     Text1 = tkinter.Text(windows, font=("黑体",15), height=10, width=50)
     Text1.pack()
+    Text2 = tkinter.Text(windows, font=("黑体",10), height=50, width=500)
+    Text2.pack()
 
     def Press_Key(event):
         global position_x, position_y
