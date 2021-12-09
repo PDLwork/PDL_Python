@@ -1,5 +1,7 @@
-from numpy import empty
+a = 4
+b = 9
+c = 6
 
 
-list1 = []
-print(list1 is empty)
+list1 = [a, b, c]
+print(max(list1))

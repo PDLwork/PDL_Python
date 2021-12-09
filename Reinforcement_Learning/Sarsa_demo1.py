@@ -38,42 +38,25 @@ def choose_action(state):
     position_x = position_list[state][0]
     position_y = position_list[state][1]
 
-    if (random.random() > ε) or ((Q[state] == 0).all()):
-        action_list = [Right, Left, Up, Down]
-        if position_x == 0:
-            action_list.remove(Left)
-        if position_x == 5:
-            action_list.remove(Right)
-        if position_y == 0:
-            action_list.remove(Up)
-        if position_y == -5:
-            action_list.remove(Down)
+    action_list = [Right, Left, Up, Down]
+    if position_x == 0:
+        action_list.remove(Left)
+    if position_x == 5:
+        action_list.remove(Right)
+    if position_y == 0:
+        action_list.remove(Up)
+    if position_y == -5:
+        action_list.remove(Down)
 
+    if (random.random() > ε) or ((Q[state] == 0).all()):
         action = random.choice(action_list)
-    elif (numpy.amin(Q[state]) < 0) and (numpy.amax(Q[state]) == 0):
-        action_list = []
-        for i in range(len(Q[state])):
-            if Q[state][i] == 0:
-                action_list.append(i)
-        
-        if (position_x == 0) and (Left in action_list):
-            action_list.remove(Left)
-        if (position_x == 5) and (Right in action_list):
-            action_list.remove(Right)
-        if (position_y == 0) and (Up in action_list):
-            action_list.remove(Up)
-        if (position_y == -5) and (Down in action_list):
-            action_list.remove(Down)
-        
-        if len(action_list) == 0:
-            for i in range(len(Q[state])):
-                if Q[state][i] < 0:
-                    action_list.append[i]
-        else:
-            action = random.choice(action_list)
     else:
-        action = numpy.argmax(Q[state])
-    
+        temporary_list = []
+        for i in action_list:
+            temporary_list.append(Q[state][i])
+        max_value = max(temporary_list)
+        action = numpy.argwhere(Q[state] == max_value)[0][0]
+
     return action
 
 #根据当前状态和动作与环境交互得到奖励和下一状态
@@ -113,14 +96,6 @@ def get_environment_feedback(state, action):
     elif position_x == 3 and position_y == -2:
         R = -100
     elif position_x == 3 and position_y == -4:
-        R = -100
-    elif position_x == 2 and position_y == 0:
-        R = -100
-    elif position_x == 4 and position_y == -1:
-        R = -100
-    elif position_x == 5 and position_y == -3:
-        R = -100
-    elif position_x == 3 and position_y == -5:
         R = -100
     else:
         R = 0
@@ -186,10 +161,6 @@ canvas.create_rectangle( 55, 155,  95, 195,fill="black")
 canvas.create_rectangle( 55, 205,  95, 245,fill="black")
 canvas.create_rectangle(155, 105, 195, 145,fill="black")
 canvas.create_rectangle(155, 205, 195, 245,fill="black")
-canvas.create_rectangle(105,   5, 145,  45,fill="black")
-canvas.create_rectangle(155, 255, 195, 295,fill="black")
-canvas.create_rectangle(205,  55, 245,  95,fill="black")
-canvas.create_rectangle(255, 155, 295, 195,fill="black")
 
 circle_anget = canvas.create_oval(5, 5, 45, 45,fill="red")
 
