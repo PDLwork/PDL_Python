@@ -15,7 +15,7 @@ Q = numpy.zeros((1, 4))
 γ = 0.8
 
 # 学习因子
-α = 0.8
+α = 0.9
 
 #选择概率
 ε = 0.8
@@ -38,11 +38,7 @@ def choose_action(state):
     position_x = position_list[state][0]
     position_y = position_list[state][1]
 
-    action_list = []
-    for i in range(len(Q[state])):
-        if Q[state][i] >= 0:
-            action_list.append(i)
-
+    action_list = [Left, Right, Up, Down]
     if position_x == 0:
         action_list.remove(Left)
     if position_x == 5:
@@ -61,9 +57,8 @@ def choose_action(state):
         max_value = max(temporary_list)
         if max_value == 0:
             for i in range(4):
-                if i in action_list:
+                if (i in action_list) and (Q[state][i] == 0):
                     action = i
-                    break
         else:
             action = numpy.argwhere(Q[state] == max_value)[0][0]
 
@@ -131,13 +126,12 @@ def main():
     while True:
         R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
         next_action = choose_action(next_state)
+        Q_target = R + γ * Q[next_state][next_action]
+        # Q_target = R + γ * Q[next_state].max()
         Q_predict= Q[state][action]
-        if trap_flag or treasure_flag:
-            Q_target = R
-        else:
-            Q_target = R + γ * Q[next_state][next_action]
         Q[state][action] += α * (Q_target - Q_predict)
-        Text2.delete(1.0, tkinter.END)
+        # Q[state][action] = R + γ * Q[next_state][next_action]
+        Text2.delete(1.0, "end")
         Text2.insert("end", Q)
         state = next_state
         action = next_action
