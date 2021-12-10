@@ -21,7 +21,7 @@ Q = numpy.zeros((1, 4))
 ε = 0.8
 
 #运动时间
-step_time = 0.01
+step_time = 0.1
 
 # 动作代表值
 Left = 0
@@ -127,12 +127,8 @@ def main():
         R, next_state, trap_flag, treasure_flag = get_environment_feedback(state, action)
         next_action = choose_action(next_state)
         Q_target = R + γ * Q[next_state][next_action]
-        # Q_target = R + γ * Q[next_state].max()
         Q_predict= Q[state][action]
         Q[state][action] += α * (Q_target - Q_predict)
-        # Q[state][action] = R + γ * Q[next_state][next_action]
-        Text2.delete(1.0, "end")
-        Text2.insert("end", Q)
         state = next_state
         action = next_action
         
@@ -186,8 +182,6 @@ def test():
     global Text1, Text2
     Text1 = tkinter.Text(windows, font=("黑体",15), height=10, width=50)
     Text1.pack()
-    Text2 = tkinter.Text(windows, font=("黑体",10), height=50, width=500)
-    Text2.pack()
 
     def Press_Key(event):
         global position_x, position_y
