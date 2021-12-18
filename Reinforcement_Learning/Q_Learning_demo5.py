@@ -20,7 +20,7 @@ Q = numpy.zeros((1, 4))
 ε = 0.8
 
 #运动时间
-step_time = 0.08
+step_time = 0.01
 
 # 动作代表值
 Left = 0
