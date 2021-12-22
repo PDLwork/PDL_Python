@@ -12,6 +12,7 @@ from module2 import fun1
 print(fun1(6, 5, 6))
 
 '''引入模块的全部功能'''
+'''引入自己编写的模块'''
 import module2
 print(module2.fun1(4, 5, 6))
 module2.hi()
