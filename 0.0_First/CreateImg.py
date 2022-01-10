@@ -15,7 +15,7 @@ img = numpy.zeros([picture_hight, picture_width])
 def change_color(Row, Cloumn):
     for i in range(Row * 10, Row * 10 + 10):
         for j in range(Cloumn * 10, Cloumn * 10 + 10):
-           img[i][j] = 255 
+            img[i][j] = 255 
 
 white_list = []
 
