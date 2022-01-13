@@ -8,11 +8,6 @@ screen = pygame.display.set_mode(size)  # 显示窗口
 color = (0, 0, 255)  # 设置颜色
 ball = pygame.image.load('D:/project/Python/PDL_Python/pygame/ball.png')  # 加载图片
 ballrect = ball.get_rect()  # 获取矩形区域
-print(ballrect)
-print(ballrect.right)
-ballrect = ballrect.move(10,20)   #移动图片
-print(ballrect)
-print(ballrect.right)
 
 speed = [5, 8]
 clock = pygame.time.Clock()
