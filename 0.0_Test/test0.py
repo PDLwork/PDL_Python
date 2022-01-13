@@ -1,6 +1,3 @@
-for i in range(1):
-    for j in range((i*2+1)**2 - (i*2-1)**2):
-        print('123')
-
-for j in range((0*2+1)**2 - (0*2-1)**2):
-    print('123')
+list1 = [[4, 5, 6], [1, 2, 3]]
+list1.append([7, 8, 9])
+print(list1)
