@@ -16,7 +16,7 @@ dragonrect = dragonrect.move(50,210)
 
 flag = True
 while True:  # 死循环确保窗口一直显示
-    clock.tick(10)
+    clock.tick(6)
     for event in pygame.event.get():  # 遍历所有事件
         if event.type == pygame.QUIT:  # 如果单击关闭窗口，则退出
             sys.exit()
