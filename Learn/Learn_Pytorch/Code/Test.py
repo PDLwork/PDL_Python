@@ -1,9 +1,11 @@
+'''###################################################################################################################'''
 '''learn dataset
 功能：检索数据集？
 '''
 from torch.utils.data import Dataset
 import cv2
 import os
+import numpy
 
 class MyDataSet(Dataset):     #子承父类
     '''
@@ -27,14 +29,17 @@ class MyDataSet(Dataset):     #子承父类
     def __len__(self):
         return len(self.img_path)
 
-# root_dir = 'Data\\test\\train'
-# ants_lable_dir = 'ants_image'
-# bees_lable_dir = 'bees_image'
+root_dir = 'Data\\test\\train'
+ants_lable_dir = 'ants_image'
+bees_lable_dir = 'bees_image'
 
-# ants_dataset = MyDataSet(root_dir, ants_lable_dir)
-# bees_dataset = MyDataSet(root_dir, bees_lable_dir)
-# img1, label1 = ants_dataset[2]
-# img2, label2 = bees_dataset[2]
+ants_dataset = MyDataSet(root_dir, ants_lable_dir)
+bees_dataset = MyDataSet(root_dir, bees_lable_dir)
+img1, label1 = ants_dataset[2]
+img2, label2 = bees_dataset[2]
+
+# print(type(img1))
+# print(img1.shape)
 
 '''可以将两个数据集加起来，长度就是加起来的长度，索引也会发生相应改变，加在后面'''
 # train_dataset = ants_dataset + bees_dataset
@@ -46,15 +51,34 @@ class MyDataSet(Dataset):     #子承父类
 
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
+
+
 '''###################################################################################################################'''
 '''learn tensorboard  SummaryWriter'''
-'''功能：生成时间文件?'''
-from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('logs')
+'''功能：生成事件文件? 可以绘制曲线 也可以显示图片
+好像可以用来观察每个阶段的显示，就可以不用保存每个步骤？'''
+# from torch.utils.tensorboard import SummaryWriter
+# writer = SummaryWriter('logs')
 
-# writer.add_image()
-# y = x
-for i in range(100):
-    writer.add_scalar('y = x', i, i)
+# '''使用writer.__add啥啥啥的就生成一个类似于日志文件的东西，然后就可以在TenserBoard中展示出来'''
+# #第三个参数为步骤，执行时可以拖动不同步骤看图片？
+# writer.add_image("test", img2, 2, dataformats='HWC')
+# # y = x
+# for i in range(100):
+#     writer.add_scalar('y = 2x', 2*i, i)
 
-writer.close()
+# writer.close()
+
+
+'''###################################################################################################################'''
+'''learn transforms'''
+'''主要是对图片进行一些变换'''
+'''常用工具：
+totensor：转换成tensor
+resize：改变大小'''
+from torchvision import transforms
+
+#先创建一个类对象
+tensor_train = transforms.ToTensor()
+tensor_img = tensor_train(img1)
+print(type(tensor_img))
