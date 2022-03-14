@@ -1,3 +1,6 @@
+'''learn dataset
+功能：检索数据集？
+'''
 from torch.utils.data import Dataset
 import cv2
 import os
@@ -24,22 +27,34 @@ class MyDataSet(Dataset):     #子承父类
     def __len__(self):
         return len(self.img_path)
 
-root_dir = 'Data\\test\\train'
-ants_lable_dir = 'ants_image'
-bees_lable_dir = 'bees_image'
+# root_dir = 'Data\\test\\train'
+# ants_lable_dir = 'ants_image'
+# bees_lable_dir = 'bees_image'
 
-ants_dataset = MyDataSet(root_dir, ants_lable_dir)
-bees_dataset = MyDataSet(root_dir, bees_lable_dir)
-img1, label1 = ants_dataset[2]
-img2, label2 = bees_dataset[2]
+# ants_dataset = MyDataSet(root_dir, ants_lable_dir)
+# bees_dataset = MyDataSet(root_dir, bees_lable_dir)
+# img1, label1 = ants_dataset[2]
+# img2, label2 = bees_dataset[2]
 
 '''可以将两个数据集加起来，长度就是加起来的长度，索引也会发生相应改变，加在后面'''
 # train_dataset = ants_dataset + bees_dataset
 # img2, label2 = train_dataset[124]
 
-cv2.imshow('test1', img1)
-cv2.imshow('test2', img2)
+# cv2.imshow('test1', img1)
+# cv2.imshow('test2', img2)
 
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+'''###################################################################################################################'''
+'''learn tensorboard  SummaryWriter'''
+'''功能：生成时间文件?'''
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter('logs')
+
+# writer.add_image()
+# y = x
+for i in range(100):
+    writer.add_scalar('y = x', i, i)
+
+writer.close()
