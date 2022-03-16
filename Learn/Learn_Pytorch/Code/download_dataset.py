@@ -2,7 +2,7 @@ import torchvision
 from torch.utils.tensorboard import SummaryWriter
 
 '''#############################################################################################################'''
-#测试下载以及最基础的使用
+#测试下载以及最基础的使用,下载完后还会自己解压
 # train_set = torchvision.datasets.CIFAR10(root="./dataset", train=True, download=True)
 # test_set = torchvision.datasets.CIFAR10(root="./dataset", train=False, download=True)
 
