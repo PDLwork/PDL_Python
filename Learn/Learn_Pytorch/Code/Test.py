@@ -57,12 +57,12 @@ img2, label2 = bees_dataset[2]
 '''learn tensorboard  SummaryWriter'''
 '''功能：生成事件文件? 可以绘制曲线 也可以显示图片
 好像可以用来观察每个阶段的显示，就可以不用保存每个步骤？'''
-# from torch.utils.tensorboard import SummaryWriter
-# writer = SummaryWriter('logs')
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter('logs')
 
 # '''使用writer.__add啥啥啥的就生成一个类似于日志文件的东西，然后就可以在TenserBoard中展示出来'''
 # #第三个参数为步骤，执行时可以拖动不同步骤看图片？
-# writer.add_image("test", img2, 2, dataformats='HWC')
+# writer.add_image("test", img2, 2, dataformats='HWC')      #dataformats='HWC' 是根据你输入的数据形式决定的 这里是用cv2读取的 也可以添加tensor型的就不需要指定了
 # # y = x
 # for i in range(100):
 #     writer.add_scalar('y = 2x', 2*i, i)
@@ -72,13 +72,38 @@ img2, label2 = bees_dataset[2]
 
 '''###################################################################################################################'''
 '''learn transforms'''
-'''主要是对图片进行一些变换'''
-'''常用工具：
-totensor：转换成tensor
-resize：改变大小'''
+'''主要是对图片进行一些变换,下面是一些常用工具的展示'''
 from torchvision import transforms
 
-#先创建一个类对象
-tensor_train = transforms.ToTensor()
-tensor_img = tensor_train(img1)
-print(type(tensor_img))
+writer.add_image("img", img1, dataformats='HWC')    #显示初始图片
+
+#ToTensor  将array或者pil读取的图片转换成tensor
+# 先创建一个类对象
+tensor_ToTensor = transforms.ToTensor()
+img_ToTensor = tensor_ToTensor(img1)     #转换
+writer.add_image("ToTensor_img", img_ToTensor)      #显示转换成tensor的图片
+
+
+#normalize 归一化
+tensor_Normalize = transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])   #需要输入均值与标准差 三通道所以需要三个
+img_Normalize = tensor_Normalize(img_ToTensor)
+'''output[channel] = (input[channel] - mean[channel]) / std[channel]'''
+writer.add_image("Normalize_img", img_Normalize)       #显示标准化后的图片
+
+
+#resize：改变图片大小 只能改变pil形式或者tensor的？好像不能改变array形式的矩阵
+#输入的是什么类型，返回的就是什么类型的
+tensor_Resize = transforms.Resize((256, 256))       #如果只有一个参数的话那就是等比缩放（具体缩放的是那个边？）
+img_Resize = tensor_Resize(img_ToTensor)
+writer.add_image("Resize_img", img_Resize)          #显示改变后大小的图片
+
+
+#Compose 中心取样在转换成tensor
+#传入参数就是之前写的函数
+tensor_Resize_2 = transforms.Resize(512)
+tensor_Compose = transforms.Compose([tensor_ToTensor, tensor_Resize_2])   #比如这里先转换成tensor在缩放
+img_Resize_2 = tensor_Compose(img1)
+writer.add_image("Resize_img", img_Resize_2, 1)     #在上述通道显示复合函数使用后的图片
+
+
+writer.close()
