@@ -58,7 +58,7 @@ img2, label2 = bees_dataset[2]
 '''功能：生成事件文件? 可以绘制曲线 也可以显示图片
 好像可以用来观察每个阶段的显示，就可以不用保存每个步骤？'''
 from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('logs')
+writer = SummaryWriter('logs')  #取什么名字就创建什么文件夹
 
 # '''使用writer.__add啥啥啥的就生成一个类似于日志文件的东西，然后就可以在TenserBoard中展示出来'''
 # #第三个参数为步骤，执行时可以拖动不同步骤看图片？
