@@ -1,9 +1,12 @@
+'''nn.conv2d中的卷积是不用输入卷积核的'''
 import torch
 import torchvision
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 
 test_set = torchvision.datasets.CIFAR10(root="./dataset", train=False, download=True, transform=torchvision.transforms.ToTensor())
 test_dataloader = DataLoader(dataset=test_set, batch_size=64, shuffle=True,num_workers=0, drop_last=False)
+writer = SummaryWriter('logs')
 
 class MyModel(torch.nn.Module):
     def __init__(self):
@@ -15,13 +18,14 @@ class MyModel(torch.nn.Module):
         return output
 
 test = MyModel()
-i = 0
 
+step = 0
 for data in test_dataloader:
-    i += 1
     imgs, target = data
     output = test(imgs)
-    print(imgs.shape)
-    print(output.shape)
-    if i == 1:
-        break
+    writer.add_images("input", imgs, step)
+    output = torch.reshape(output, (-1, 3, 30, 30))     #将output的trnsor的形状改变 -1是自适应，这里就把64个batch改成128个
+    writer.add_images("output", output, step)
+    step += 1
+
+writer.close()

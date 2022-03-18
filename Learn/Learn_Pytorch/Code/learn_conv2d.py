@@ -14,7 +14,7 @@ kernel = torch.tensor([[-1, -1, -1],
                        [-1, -1, -1]])
 
 input = torch.reshape(input, (1, 1, 5, 6))  #conv2需要4参数的形式  所以需要转换  之前只是宽和高2参数
-kernel = torch.reshape(kernel, (1, 1, 3, 3)) #tensor4参数形式一般为batch_size，chanels，Hight(行), Whild(宽)
+kernel = torch.reshape(kernel, (1, 1, 3, 3)) #tensor4参数形式一般为batch_size，chanels，Hight(行), Whild(列)
 
 '''conv2d输入参数
 input：输入图像  kernel：输入卷积核， stride：步长
