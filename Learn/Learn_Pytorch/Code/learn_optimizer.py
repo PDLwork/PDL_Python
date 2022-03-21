@@ -2,23 +2,6 @@ import torch
 import torchvision
 from torch.utils.data import DataLoader
 
-'''
-input = torch.tensor([1, 2, 3], dtype=torch.float32)
-target = torch.tensor([1, 2, 5], dtype=torch.float32)
-
-input = torch.reshape(input, (1, 1, 1, 3))
-target = torch.reshape(target, (1, 1, 1, 3))
-
-loss = torch.nn.L1Loss()    #总差求平均若是loss = torch.nn.L1Loss(reduction='sum')则为求总差距
-result = loss(input, target)
-
-loss_mse = torch.nn.MSELoss()  #平方差求平均
-result_mes = loss_mse(input, target)
-
-print(result)
-print(result_mes)
-'''
-
 #还有交叉熵误差示例，一般用于分类   
 class Mynet2(torch.nn.Module):
     def __init__(self):
@@ -41,19 +24,18 @@ class Mynet2(torch.nn.Module):
         return output
 
 test_set = torchvision.datasets.CIFAR10(root="./dataset", train=False, download=True, transform=torchvision.transforms.ToTensor())
-test_dataloader = DataLoader(dataset=test_set, batch_size=1, shuffle=True,num_workers=0, drop_last=False)
-test_net = Mynet2()
-loss = torch.nn.CrossEntropyLoss()
+test_dataloader = DataLoader(dataset=test_set, batch_size=10, shuffle=True,num_workers=0, drop_last=False)
+test_net = Mynet2() #创建网络
+loss = torch.nn.CrossEntropyLoss()  #求误差
+optimizer = torch.optim.SGD(test_net.parameters(), lr=0.01)   #随机梯度下降法  一种优化器
 
-i = 0
-for data in test_dataloader:
-    img, target = data
-    output = test_net(img)
-    result_loss = loss(output, target)
-    result_loss.backward()  #这一步实际上是为了求梯度
-    print(output)
-    print(target)
-    print(result_loss)
-    i += 1
-    if i == 1:
-        break
+for epoch in range(20):
+    running_loss = 0.0  #设置一个变量用于存储这一轮循环中的误差总和
+    for img, target in test_dataloader:
+        optimizer.zero_grad()   #将梯度初始化为0，不然回累计
+        output = test_net(img)  #输入求输出，相当于正向传播
+        result_loss = loss(output, target)  #求这次的误差
+        result_loss.backward()  #这一步实际上是为了求梯度
+        optimizer.step()    #开始修正参数
+        running_loss = running_loss + result_loss   #误差求和
+    print(running_loss)
