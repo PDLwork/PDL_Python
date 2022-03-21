@@ -28,6 +28,6 @@ writer = SummaryWriter('logs')
 
 for i in range(10):
     img, target = test_set[i]
-    writer.add_image("img", img, i)
+    writer.add_image("img_test", img, i)
 
 writer.close()
