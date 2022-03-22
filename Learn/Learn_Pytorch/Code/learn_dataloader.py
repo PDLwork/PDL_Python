@@ -24,10 +24,10 @@ test_dataloader = DataLoader(dataset=test_set, batch_size=64, shuffle=True,num_w
 
 
 #和tensorboard联合调试
-Writer = writer = SummaryWriter('logs')
+Writer = SummaryWriter('logs')
 step = 0
 for data in test_dataloader:
     imgs, target = data  #这时的imgs并不是单张图片，而是64张图片了，和设置的batch_size有关
-    writer.add_images("dataloader", imgs, step) #注意是add_images
+    Writer.add_images("dataloader", imgs, step) #注意是add_images
     step += 1
 Writer.close()
