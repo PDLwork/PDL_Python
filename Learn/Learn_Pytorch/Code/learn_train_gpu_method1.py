@@ -7,6 +7,13 @@ import learn_train_module
 learning_rate = 0.01    #learning_rate = 1e-2
 epoch = 10   #训练的轮数
 
+#判断是否能在GPU上训练
+#需要添加的部分有：模型、loss、数据
+if torch.cuda.is_available():
+    print('系统可以使用GPU训练！\n即将采用GPU训练')
+else:
+    print('系统不可以使用GPU训练！\n即将采用CPU训练')
+
 # 在tensorboard上绘制结果
 Writer = torch.utils.tensorboard.SummaryWriter('logs')
 
@@ -28,9 +35,15 @@ test_dataloader = torch.utils.data.DataLoader(dataset=test_set, batch_size=64, s
 # 搭建神经网络 一般放在单独的python文件
 # 创建网络模型
 net = learn_train_module.Mynet()
+'''------------------------------GPU训练改动部分------------------------------'''
+if torch.cuda.is_available():
+    net = net.cuda()
 
 # 构建损失函数(分类用交叉熵)
 loss_function = torch.nn.CrossEntropyLoss()
+'''------------------------------GPU训练改动部分------------------------------'''
+if torch.cuda.is_available():
+    loss_function = loss_function.cuda()
 
 # 选择优化器，用于反向传播修正参数
 optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate)   #第一个变量为选择修正的参数， 第二个为学习率
@@ -39,9 +52,14 @@ total_train_step = 0    #用于记录训练的次数
 total_test_step = 0     #记录测试的轮数
 for i in range(epoch):
     print('----------第{}轮训练开始----------'.format(i+1))
+
     # 训练开始
     # net.train()   #并不是必须的,只是对特定的层有作用
     for imgs, targets in train_dataloader:
+        '''------------------------------GPU训练改动部分------------------------------'''
+        if torch.cuda.is_available():
+            imgs = imgs.cuda()
+            targets = targets.cuda()
         output = net(imgs)  #输入图片求输出，相当于正向传播
         result_loss = loss_function(output, targets)  #求这次的误差
 
@@ -62,6 +80,10 @@ for i in range(epoch):
     
     with torch.no_grad():   #关闭梯度
         for imgs, targets in test_dataloader:
+            '''------------------------------GPU训练改动部分------------------------------'''
+            if torch.cuda.is_available():
+                imgs = imgs.cuda()
+                targets = targets.cuda()
             output = net(imgs)  #输出的是十分类的各个分类的概率
             result_loss = loss_function(output, targets)
             total_test_loss += result_loss.item()
@@ -72,7 +94,7 @@ for i in range(epoch):
     print("整体测试集上的loss：{}，第{}轮验证的正确率为{}".format(total_test_loss, i+1, total_accuracy/test_set_len))
 
     # torch.save(net(), "test_net{}.path".format(i))    #这样是保存整个模型和参数  下面是只保存参数
-    # torch.save(net.state_dict(), "test_net{}.path".format(i))      #保存一轮的权值
-    # print('第{}轮参数模型已保存'.format(i+1))
+    torch.save(net.state_dict(), "test_net{}.path".format(i))      #保存一轮的权值
+    print('第{}轮参数模型已保存'.format(i+1))
 
 Writer.close()
