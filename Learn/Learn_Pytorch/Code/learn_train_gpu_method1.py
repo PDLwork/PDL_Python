@@ -45,7 +45,7 @@ loss_function = torch.nn.CrossEntropyLoss()
 if torch.cuda.is_available():
     loss_function = loss_function.cuda()
 
-# 选择优化器，用于反向传播修正参数
+# 选择优化器，用于反向传播修正参数  
 optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate)   #第一个变量为选择修正的参数， 第二个为学习率
 
 total_train_step = 0    #用于记录训练的次数
