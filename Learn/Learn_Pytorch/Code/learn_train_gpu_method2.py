@@ -5,6 +5,7 @@ import learn_train_module
 
 #调整的参数
 learning_rate = 0.01    #learning_rate = 1e-2
+batch = 64  #设置次轮训练的个数
 epoch = 10   #训练的轮数
 
 #定义训练的设备
@@ -32,8 +33,8 @@ print('训练集长度为：{}'.format(train_set_len))
 print('测试集长度为：{}'.format(test_set_len))
 
 # 用Dataloader加载数据集
-train_dataloader = torch.utils.data.DataLoader(dataset=train_set, batch_size=64, shuffle=True, num_workers=0, drop_last=False)
-test_dataloader = torch.utils.data.DataLoader(dataset=test_set, batch_size=64, shuffle=True, num_workers=0, drop_last=False)
+train_dataloader = torch.utils.data.DataLoader(dataset=train_set, batch_size=batch, shuffle=True, num_workers=0, drop_last=False)
+test_dataloader = torch.utils.data.DataLoader(dataset=test_set, batch_size=batch, shuffle=True, num_workers=0, drop_last=False)
 
 # 搭建神经网络 一般放在单独的python文件
 # 创建网络模型
