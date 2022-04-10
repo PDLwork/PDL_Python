@@ -3,8 +3,6 @@ import math
 import cv2
 import numpy
 import matplotlib.pyplot
-from numpy.lib.type_check import imag
-from array_test import array_print_excel
 
 '''-------------------------初始参数设计-------------------------'''
 sigma_E = 1.5
