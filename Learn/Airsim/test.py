@@ -2,6 +2,7 @@ import airsim
 import numpy
 import cv2
 import matplotlib.pyplot
+import tkinter
 
 # 定义一个保存图片的函数，保存rgb和灰度图
 # 输入的是读取相机的数据和保存图片的索引
@@ -32,24 +33,25 @@ def save_image(responses, prefix = ""):
     matplotlib.pyplot.axis('off')
     matplotlib.pyplot.imshow(img_gray, cmap='gray')
 
-    # matplotlib.pyplot.show()      # 垃圾函数  设计得一点都不好
-    matplotlib.pyplot.ion()     # 可交互
+    matplotlib.pyplot.show(block = False)      # 垃圾函数  设计得一点都不好
+    # matplotlib.pyplot.ion()     # 可交互
     matplotlib.pyplot.pause(0.01)   #给他反应时间？
 
 if __name__ == "__main__":
     client = airsim.MultirotorClient()  # 与airsim创建链接
     client.confirmConnection()  # 查询是否建立连接
     client.enableApiControl(True)   # 打开API控制权
-
     client.armDisarm(True)  # 解锁
-    client.takeoffAsync().join()   # 起飞
 
+    client.takeoffAsync().join()   # 起飞
+    responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
+    save_image(responses, 0)
     client.moveToZAsync(-3, 1).join()   # 上升到3m高度
 
 
     # 读取当前时间节点的相机信息
     responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
-    save_image(responses, 0)
+    save_image(responses, 1)
 
     # drivetrain = airsim.DrivetrainType.ForwardOnly
     # yaw_mode = airsim.YawMode(False, 90)
@@ -60,8 +62,10 @@ if __name__ == "__main__":
     # client.moveToPositionAsync(0, 0, -3, 5, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 回到（0,0）点坐标
 
     client.landAsync().join()     # 降落
-    client.armDisarm(False)     # 上锁
+    responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
+    save_image(responses, 2)
 
+    client.armDisarm(False)     # 上锁
     client.enableApiControl(False)   # 关闭API控制权
 
     print('测试完成')
