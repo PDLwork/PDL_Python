@@ -46,21 +46,15 @@ if __name__ == "__main__":
     client.takeoffAsync().join()   # 起飞
     client.moveToZAsync(-15, 1).join()   # 上升到3m高度
 
+    drivetrain = airsim.DrivetrainType.ForwardOnly
+    yaw_mode = airsim.YawMode(False, 90)
 
-    # 读取当前时间节点的相机信息
-    # responses = client.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
-    # save_image(responses, 1)
-
-    # drivetrain = airsim.DrivetrainType.ForwardOnly
-    # yaw_mode = airsim.YawMode(False, 90)
-
-    # client.moveToPositionAsync(10, 0, -3, 5, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,0）点坐标
-    # client.moveToPositionAsync(10, 10, -3, 5, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,5）点坐标
-    # client.moveToPositionAsync(0, 10, -3, 5, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（0,5）点坐标
-    # client.moveToPositionAsync(0, 0, -3, 5, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 回到（0,0）点坐标
+    client.moveToPositionAsync(10, 0, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,0）点坐标
+    client.moveToPositionAsync(10, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,5）点坐标
+    client.moveToPositionAsync(0, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（0,5）点坐标
+    client.moveToPositionAsync(0, 0, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 回到（0,0）点坐标
 
     client.landAsync().join()     # 降落
-
 
     client.armDisarm(False)     # 上锁
     client.enableApiControl(False)   # 关闭API控制权

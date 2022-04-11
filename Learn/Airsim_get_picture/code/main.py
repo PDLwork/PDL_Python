@@ -39,6 +39,10 @@ def save_image(responses, prefix = ""):
     matplotlib.pyplot.pause(0.01)   #给他反应时间？
     '''
 
+#传输数据跑LGMD
+def run_LGMD():
+    pass
+
 if __name__ == "__main__":
     client_get_picture = airsim.MultirotorClient()   # 与airsim创建链接
     client_get_picture.confirmConnection()   # 查询是否建立连接
@@ -49,5 +53,5 @@ if __name__ == "__main__":
     while True:
         responses = client_get_picture.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
         save_image(responses, i)
-        time.sleep(1)
+        time.sleep(0.2)
         i += 1
