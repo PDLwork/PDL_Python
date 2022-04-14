@@ -7,15 +7,17 @@ if __name__ == "__main__":
     client.armDisarm(True)  # 解锁
 
     client.takeoffAsync().join()   # 起飞
-    client.moveToZAsync(-15, 1).join()   # 上升到3m高度
+    client.moveToZAsync(-15, 1).join()   # 上升到15m高度
 
     drivetrain = airsim.DrivetrainType.ForwardOnly
     yaw_mode = airsim.YawMode(False, 90)
 
-    client.moveToPositionAsync(10, 0, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,0）点坐标
-    client.moveToPositionAsync(10, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（5,5）点坐标
-    client.moveToPositionAsync(0, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（0,5）点坐标
+    client.moveToPositionAsync(10, 0, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（10,0）点坐标
+    client.moveToPositionAsync(10, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（10,10）点坐标
+    client.moveToPositionAsync(0, 10, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 飞到（0,10）点坐标
     client.moveToPositionAsync(0, 0, -15, 1, drivetrain=drivetrain, yaw_mode=yaw_mode).join()  # 回到（0,0）点坐标
+
+    client.moveToZAsync(-1, 1).join()
 
     client.landAsync().join()     # 降落
 
