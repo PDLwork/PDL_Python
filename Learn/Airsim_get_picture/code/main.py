@@ -24,13 +24,12 @@ def save_image(responses, prefix = ""):
 
     # reshape把1维数组改为三维数组（得到三通道的RGB图像）
     img_rgb = buffer.reshape(response.height, response.width, -1)
-    print(img_rgb.shape)
     # 得到灰度图
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
 
     # 保存图片
-    cv2.imwrite('./img/RGB/'+str(prefix)+'.png', img_rgb)
-    cv2.imwrite('./img/Grayscale/'+str(prefix)+'.png', img_gray)
+    cv2.imwrite('./img/RGB/'+str(prefix)+'.jpg', img_rgb)
+    cv2.imwrite('./img/Grayscale/'+str(prefix)+'.jpg', img_gray)
 
     return img_gray
 
@@ -62,8 +61,8 @@ def run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2,
 
     #卷积
     Layer_E = LGMD_tool.Convolution_same(img_diff2, kernel_E, r)
-    Layer_I_delay1 = LGMD_tool.Convolution_same(img_diff2, kernel_I_delay1, r)
-    Layer_I_delay2 = LGMD_tool.Convolution_same(img_diff1, kernel_I_delay2, r)
+    Layer_I_delay1 = LGMD_tool.Convolution_same(img_diff1, kernel_I_delay1, r)
+    Layer_I_delay2 = LGMD_tool.Convolution_same(img_diff0, kernel_I_delay2, r)
     Layer_I = Layer_I_delay1 + Layer_I_delay2
 
     #得到S层输出并处理
@@ -74,7 +73,7 @@ def run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2,
             if Layer_S[i][j]<0:
                 Layer_S[i][j]=0
     
-    cv2.imwrite('./img/LGMD/'+str(prefix)+'.png', Layer_S)
+    cv2.imwrite('./img/LGMD/'+str(prefix)+'.jpg', Layer_S)
 
 if __name__ == "__main__":
     #运行代码得到卷积核
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     client_get_picture.enableApiControl(True)   # 打开API控制权
     client_get_picture.armDisarm(True)   # 解锁
 
-    #先获取三张图片
+    #先获取4张图片
     responses = client_get_picture.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
     img0 = save_image(responses, 0)
     responses = client_get_picture.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
