@@ -1,4 +1,3 @@
-from pip import main
 import torch
 
 class Mynet(torch.nn.Module):
