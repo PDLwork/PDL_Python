@@ -94,7 +94,7 @@ if __name__ == "__main__":
     img2 = save_image(responses, 2)
     responses = client_get_picture.simGetImages([airsim.ImageRequest("0", airsim.ImageType.Scene, False, False)])   # 每一个的参数：相机名称，图像类型，是否浮点数，是否压缩图像（默认压缩）
     img3 = save_image(responses, 3)
-    run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2, 3)
+    # run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2, 3)
 
     i = 4
     while True:
@@ -103,5 +103,5 @@ if __name__ == "__main__":
         img1 = img2
         img2 = img3
         img3= save_image(responses, i)
-        run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2, i)
+        # run_LGMD(img3, img2, img1, img0, kernel_E, kernel_I_delay1, kernel_I_delay2, i)
         i += 1
