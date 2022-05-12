@@ -95,7 +95,7 @@ for i in range(epoch):
     print("整体测试集上的loss：{}，第{}轮验证的正确率为{}".format(total_test_loss, i+1, total_accuracy/test_set_len))
 
     # torch.save(net(), "test_net{}.path".format(i))    #这样是保存整个模型和参数  下面是只保存参数
-    torch.save(net.state_dict(), "test_net{}.path".format(i))      #保存一轮的权值
-    print('第{}轮参数模型已保存'.format(i+1))
+    # torch.save(net.state_dict(), "test_net{}.path".format(i))      #保存一轮的权值
+    # print('第{}轮参数模型已保存'.format(i+1))
 
 Writer.close()
