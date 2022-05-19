@@ -3,7 +3,7 @@ import torchvision
 import torch.utils.tensorboard
 import learn_train_module
 
-#调整的参数
+# 调整的参数
 learning_rate = 0.01    #learning_rate = 1e-2
 batch = 64  #设置次轮训练的个数
 epoch = 10   #训练的轮数
