@@ -98,13 +98,13 @@ def main():
     for x in range(950,954-3):
         #获取四张图片
         FileName = FilePath+str(x)+'.jpg'
-        img0=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
+        img0=cv2.imread('E:/img/RGB/932_rgb.jpg', cv2.IMREAD_GRAYSCALE)
         FileName = FilePath+str(x+1)+'.jpg'
-        img1=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
+        img1=cv2.imread('E:/img/RGB/933_rgb.jpg', cv2.IMREAD_GRAYSCALE)
         FileName = FilePath+str(x+2)+'.jpg'
-        img2=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
+        img2=cv2.imread('E:/img/RGB/934_rgb.jpg', cv2.IMREAD_GRAYSCALE)
         FileName = FilePath+str(x+3)+'.jpg'
-        img3=cv2.imread(str(FileName), cv2.IMREAD_GRAYSCALE)
+        img3=cv2.imread('E:/img/RGB/935_rgb.jpg', cv2.IMREAD_GRAYSCALE)
 
         #更改图片像素大小
         img0 = cv2.resize(img0, dsize=(480, 360))
@@ -140,6 +140,8 @@ def main():
             for j in range(m):
                 if Layer_S[i][j]<0:
                     Layer_S[i][j]=0
+        Layer_S = Layer_S * 1000
+        cv2.imwrite('img_cv2.jpg', Layer_S)
         
         #对S层增强得到G层并处理
         plus=numpy.ones((3,3))
